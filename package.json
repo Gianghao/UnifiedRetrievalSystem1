@@ -1,0 +1,11 @@
+{
+  "name": "unified-messaging",
+  "private": true,
+  "workspaces": ["apps/api", "apps/web"],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "dev:api": "npm run dev -w @unified/api",
+    "dev:web": "npm run dev -w @unified/web"
+  }
+}

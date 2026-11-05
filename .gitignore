@@ -1,0 +1,12 @@
+node_modules/
+.next/
+dist/
+.env
+.env.*
+!.env.example
+DockerData/
+.local-test-db/
+.local-test-postgres.log
+*.vhdx
+*.log
+*.tsbuildinfo
