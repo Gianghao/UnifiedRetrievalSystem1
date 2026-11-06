@@ -2,6 +2,8 @@
 
 This repository is an **incomplete local-development increment**, not a production-ready messaging or AI retrieval system. It currently contains a Next.js web app, a NestJS API, PostgreSQL schema/migration, Redis-backed rate limiting, and Docker Compose setup. Multimodal ingestion and AI retrieval are not implemented yet. Use disposable test accounts and data only; the development API prints OTP codes and phone numbers to its logs. The server can read message contents; end-to-end encryption is not implemented.
 
+Conversations support one attachment per message: JPEG, PNG, GIF, WebP, MP3, WAV, Ogg, WebM, MP4, and PDF, up to 20 MiB. Images and supported audio/video play in the conversation; PDFs download. The browser's reported type and the file signature must match. Attachments are stored in PostgreSQL and accessible to conversation members. Their bytes become unavailable 30 days after sending and the API clears expired bytes while it is running. Deletion from backups and database storage reclamation are not covered. The message and filename remain visible after expiration.
+
 ## Run it from VS Code on Windows
 
 ### Requirements
@@ -12,7 +14,7 @@ This repository is an **incomplete local-development increment**, not a producti
 
 The quickest setup uses Docker for the web app, API, PostgreSQL, and Redis, so Node.js does not need to be installed on Windows for this route.
 
-**Disk space:** Docker Desktop's virtual disk was last seen on `C:`. Docker image downloads and builds can consume additional space there. If C: is still low, move Docker Desktop's disk image to `D:\DockerData` in Docker Desktop settings before the first build. The application's PostgreSQL and Redis bind-mounted data is stored separately under this repository's `DockerData\` folder.
+**Disk space:** Docker Desktop's virtual disk was last observed under `D:\DockerData\DockerDesktopWSL`. PostgreSQL and Redis data locations are set in `docker-compose.yml`. Check available disk space before large downloads or builds.
 
 1. In VS Code, choose **File → Open Folder…** and open `D:\ChatGPT\Hao\unified-messaging`.
 2. Start Docker Desktop and wait until it reports that the engine is running.
@@ -46,7 +48,19 @@ To stop the app, return to the terminal running Compose and press `Ctrl+C`, then
 docker compose down
 ```
 
-This keeps the PostgreSQL and Redis development data in `DockerData\`. Do not delete that folder if you need to keep it. The local PostgreSQL port is `55433` to avoid colliding with a Windows PostgreSQL service on `5432`.
+The PostgreSQL and Redis data locations are configured in `docker-compose.yml`; keep those directories if you need the data. The local PostgreSQL port is `55433` to avoid colliding with a Windows PostgreSQL service on `5432`.
+
+### Upgrade an existing local database
+
+Compose only runs the migration files automatically when the PostgreSQL data directory is first initialized. For an existing database created before attachments were added, start Docker Desktop and the database, then apply the additive attachment migration once from a PowerShell terminal in the project folder:
+
+```powershell
+docker compose up -d db
+Get-Content -Raw db/migrations/002_attachments.sql | docker compose exec -T db psql -v ON_ERROR_STOP=1 -U app -d messaging
+docker compose up --build
+```
+
+The migration preserves existing messages. Check available Docker disk space before rebuilding, particularly if Docker Desktop stores its images on C:.
 
 ### Start the API and web app directly from VS Code (optional)
 
@@ -87,7 +101,7 @@ npm test
 npm audit --omit=dev
 ```
 
-The PostgreSQL-backed OTP concurrency test is skipped unless `TEST_DATABASE_URL` points to a **dedicated disposable test database**. It creates and drops an isolated schema. Do not point it at a database containing valuable data. The current checks do not verify the whole authentication, WebSocket, or browser flow end to end.
+The PostgreSQL-backed OTP concurrency test is skipped unless `TEST_DATABASE_URL` points to a **dedicated disposable test database**. The attachment integration test also requires `TEST_REDIS_URL` and a freshly built API (`npm run build -w @unified/api`). The tests create and drop isolated database schemas. Do not point them at a database containing valuable data. These checks do not verify the whole authentication, WebSocket, or browser flow end to end.
 
 ## Push the project to GitHub
 
@@ -128,4 +142,4 @@ If you edit other project files, stage their explicit paths too. Do not use `git
 
 ## Not implemented yet
 
-The project does not yet provide a production SMS provider, full session management, contact blocking/reporting, message edits/deletion/replies, media uploads or retention cleanup, PDF/audio/video processing, embeddings, reranking, retrieval/search, grounded answers, citations, summaries, or model evaluation. No 30-day data deletion guarantee exists. See [the implementation plan](docs/plan.md) for the intended phases.
+The project does not yet provide a production SMS provider, full session management, contact blocking/reporting, message edits/deletion/replies, malware scanning, PDF/audio/video processing, embeddings, reranking, retrieval/search, grounded answers, citations, summaries, or model evaluation. Attachment expiration is a local prototype and is not a complete backup or secure-erasure policy. See [the implementation plan](docs/plan.md) for the intended phases.

@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { WebSocketGateway, WebSocketServer, OnGatewayConnection } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Request, Response } from 'express';
+import express from 'express';
 import cookieParser from 'cookie-parser';
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
@@ -12,6 +13,7 @@ import Redis from 'ioredis';
 import { z, ZodError } from 'zod';
 import { codeHash, hashToken, newCode, newToken, normalizePhone, safeEqual } from './core';
 import { issueVerification, lockVerification } from './verification';
+import { attachmentHash, identifyAttachment, MAX_ATTACHMENT_BYTES } from './attachments';
 
 const origin = process.env.WEB_ORIGIN || 'http://localhost:3000';
 const secret = process.env.OTP_SECRET;
@@ -136,7 +138,7 @@ class Api {
   }
   @Get('conversations/:id/messages') async messages(@Req() req:Request,@Param('id') id:string,@Query('before') before?:string) {
     const user=await this.store.user(req.cookies?.session); parse(uuid,id); if(before) parse(uuid,before); await this.store.member(user.id,id);
-    const r=await pool.query(`SELECT m.id,m.client_id,m.sender_id,m.body,m.sent_at,m.edited_at,m.deleted_at, r.delivered_at,r.read_at FROM messages m LEFT JOIN message_receipts r ON r.message_id=m.id AND r.user_id<>m.sender_id WHERE m.conversation_id=$1 AND ($2::uuid IS NULL OR (m.sent_at,m.id)<(SELECT sent_at,id FROM messages WHERE id=$2 AND conversation_id=$1)) ORDER BY m.sent_at DESC,m.id DESC LIMIT 50`,[id,before||null]);
+    const r=await pool.query(`SELECT m.id,m.client_id,m.sender_id,m.body,m.sent_at,m.edited_at,m.deleted_at, r.delivered_at,r.read_at, CASE WHEN a.message_id IS NOT NULL THEN json_build_object('filename',a.filename,'mime_type',a.mime_type,'size_bytes',a.size_bytes,'available',a.content IS NOT NULL AND a.expires_at>now()) END AS attachment FROM messages m LEFT JOIN message_receipts r ON r.message_id=m.id AND r.user_id<>m.sender_id LEFT JOIN attachments a ON a.message_id=m.id WHERE m.conversation_id=$1 AND ($2::uuid IS NULL OR (m.sent_at,m.id)<(SELECT sent_at,id FROM messages WHERE id=$2 AND conversation_id=$1)) ORDER BY m.sent_at DESC,m.id DESC LIMIT 50`,[id,before||null]);
     return r.rows.reverse();
   }
   @Post('conversations/:id/messages') async send(@Req() req:Request,@Param('id') id:string,@Body() input:unknown) {
@@ -147,6 +149,48 @@ class Api {
     if(m.conversation_id!==id || m.body!==data.body) throw new HttpException('Client message ID already used.',409);
     await this.events.changed(id); return m;
   }
+  @Post('conversations/:id/attachments') async attach(@Req() req:Request,@Param('id') id:string,@Query('client_id') clientId:string,@Query('filename') filename:string,@Query('type') type:string) {
+    const user=await this.store.user(req.cookies?.session); parse(uuid,id); parse(uuid,clientId); await this.store.member(user.id,id);
+    await limit(`upload:${user.id}`, 60, 3600);
+    const bytes=req.body;
+    if (!Buffer.isBuffer(bytes) || !bytes.length || bytes.length>MAX_ATTACHMENT_BYTES) throw new BadRequestException('Choose a file up to 20 MB.');
+    const mime=identifyAttachment(bytes,type);
+    if (!mime) throw new BadRequestException('Unsupported file or file contents do not match its type.');
+    const name=parse(z.string().min(1).max(255),filename).replace(/[\x00-\x1f\x7f/\\]/g,'_');
+    const hash=attachmentHash(bytes);
+    const client=await pool.connect();
+    try {
+      await client.query('BEGIN');
+      const inserted=await client.query('INSERT INTO messages(conversation_id,sender_id,client_id,body) VALUES($1,$2,$3,$4) ON CONFLICT(sender_id,client_id) DO NOTHING RETURNING id,sent_at',[id,user.id,clientId,'Attachment: '+name]);
+      if (inserted.rows[0]) {
+        await client.query("INSERT INTO attachments(message_id,filename,mime_type,size_bytes,sha256,content,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7::timestamptz + interval '30 days')",[inserted.rows[0].id,name,mime,bytes.length,hash,bytes,inserted.rows[0].sent_at]);
+      } else {
+        const existing=await client.query('SELECT m.conversation_id,a.filename,a.mime_type,a.sha256 FROM messages m LEFT JOIN attachments a ON a.message_id=m.id WHERE m.sender_id=$1 AND m.client_id=$2',[user.id,clientId]);
+        const row=existing.rows[0];
+        if (!row || row.conversation_id!==id || row.filename!==name || row.mime_type!==mime || row.sha256!==hash) throw new HttpException('Client message ID already used.',409);
+      }
+      await client.query('COMMIT');
+    } catch (err) { await client.query('ROLLBACK'); throw err; } finally { client.release(); }
+    await this.events.changed(id); return {ok:true};
+  }
+  @Get('attachments/:id') async attachment(@Req() req:Request,@Param('id') id:string,@Res() res:Response) {
+    const user=await this.store.user(req.cookies?.session); parse(uuid,id);
+    const result=await pool.query(`SELECT a.content,a.mime_type,a.size_bytes,a.filename FROM attachments a JOIN messages m ON m.id=a.message_id JOIN conversation_members cm ON cm.conversation_id=m.conversation_id AND cm.user_id=$2 WHERE a.message_id=$1 AND a.content IS NOT NULL AND a.expires_at>now() AND m.deleted_at IS NULL`,[id,user.id]);
+    if (!result.rows[0]) throw new HttpException('Attachment unavailable.',404);
+    const {content,mime_type,size_bytes,filename}=result.rows[0] as {content:Buffer;mime_type:string;size_bytes:number;filename:string};
+    res.setHeader('Content-Type',mime_type); res.setHeader('X-Content-Type-Options','nosniff'); res.setHeader('Cache-Control','private, no-store');
+    const disposition=mime_type==='application/pdf'?'attachment':'inline';
+    res.setHeader('Content-Disposition',`${disposition}; filename*=UTF-8''${encodeURIComponent(filename).replace(/['()*]/g,c=>`%${c.charCodeAt(0).toString(16).toUpperCase()}`)}`); res.setHeader('Accept-Ranges','bytes');
+    const range=req.headers.range;
+    if (range) {
+      const match=/^bytes=(\d+)-(\d*)$/.exec(range);
+      if (!match) { res.setHeader('Content-Range',`bytes */${size_bytes}`); return res.sendStatus(416); }
+      const start=Number(match[1]), end=match[2]?Math.min(Number(match[2]),size_bytes-1):size_bytes-1;
+      if (start>=size_bytes || end<start) { res.setHeader('Content-Range',`bytes */${size_bytes}`); return res.sendStatus(416); }
+      res.status(206).setHeader('Content-Range',`bytes ${start}-${end}/${size_bytes}`); res.setHeader('Content-Length',end-start+1); return res.send(content.subarray(start,end+1));
+    }
+    res.setHeader('Content-Length',size_bytes); return res.send(content);
+  }
   @Post('conversations/:id/read') async read(@Req() req:Request,@Param('id') id:string) {
     const user=await this.store.user(req.cookies?.session); parse(uuid,id); await this.store.member(user.id,id);
     const changed=await pool.query(`INSERT INTO message_receipts(message_id,user_id,delivered_at,read_at) SELECT id,$2,now(),now() FROM messages WHERE conversation_id=$1 AND sender_id<>$2 ON CONFLICT(message_id,user_id) DO UPDATE SET delivered_at=COALESCE(message_receipts.delivered_at,now()),read_at=COALESCE(message_receipts.read_at,now()) WHERE message_receipts.read_at IS NULL`,[id,user.id]);
@@ -155,10 +199,14 @@ class Api {
 }
 @Module({controllers:[Api],providers:[Store,Events]}) class AppModule {}
 async function bootstrap() {
-  const app=await NestFactory.create(AppModule,{bodyParser:true});
+  const app=await NestFactory.create(AppModule,{bodyParser:false});
   app.use(cookieParser());
   app.enableCors({origin,credentials:true});
   app.use((req:Request,res:Response,next:()=>void)=>{ if(!['GET','HEAD','OPTIONS'].includes(req.method) && req.headers.origin!==origin) { res.status(403).json({message:'Invalid origin'}); return; } next(); });
-  await app.listen(3001,'0.0.0.0');
+  app.use('/api/conversations/:id/attachments',express.raw({type:'application/octet-stream',limit:MAX_ATTACHMENT_BYTES}));
+  app.use(express.json({limit:'100kb'}));
+  const cleanup=()=>pool.query('UPDATE attachments SET content=NULL WHERE content IS NOT NULL AND expires_at<=now()').catch(()=>console.error('Attachment cleanup failed'));
+  void cleanup(); setInterval(cleanup,60*60*1000).unref();
+  await app.listen(Number(process.env.PORT || 3001),'0.0.0.0');
 }
 bootstrap();
