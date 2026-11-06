@@ -141,6 +141,19 @@ class Api {
     const r=await pool.query(`SELECT m.id,m.client_id,m.sender_id,m.body,m.sent_at,m.edited_at,m.deleted_at, r.delivered_at,r.read_at, CASE WHEN a.message_id IS NOT NULL THEN json_build_object('filename',a.filename,'mime_type',a.mime_type,'size_bytes',a.size_bytes,'available',a.content IS NOT NULL AND a.expires_at>now()) END AS attachment FROM messages m LEFT JOIN message_receipts r ON r.message_id=m.id AND r.user_id<>m.sender_id LEFT JOIN attachments a ON a.message_id=m.id WHERE m.conversation_id=$1 AND ($2::uuid IS NULL OR (m.sent_at,m.id)<(SELECT sent_at,id FROM messages WHERE id=$2 AND conversation_id=$1)) ORDER BY m.sent_at DESC,m.id DESC LIMIT 50`,[id,before||null]);
     return r.rows.reverse();
   }
+  @Get('conversations/:id/shared') async shared(@Req() req:Request,@Param('id') id:string,@Query('type') type:string,@Query('before') before?:string) {
+    const user=await this.store.user(req.cookies?.session); parse(uuid,id); if(before) parse(uuid,before); await this.store.member(user.id,id);
+    const category=parse(z.enum(['media','files','links']),type);
+    const result=await pool.query(`SELECT m.id,m.body,m.sent_at,a.filename,a.mime_type,a.size_bytes
+      FROM messages m LEFT JOIN attachments a ON a.message_id=m.id
+      WHERE m.conversation_id=$1 AND m.deleted_at IS NULL
+      AND ($2::uuid IS NULL OR (m.sent_at,m.id)<(SELECT sent_at,id FROM messages WHERE id=$2 AND conversation_id=$1))
+      AND CASE WHEN $3='links' THEN a.message_id IS NULL AND m.body ~* 'https?://[^[:space:]<>]+'
+        WHEN $3='files' THEN a.mime_type='application/pdf' AND a.content IS NOT NULL AND a.expires_at>now()
+        ELSE a.mime_type LIKE ANY(ARRAY['image/%','audio/%','video/%']) AND a.content IS NOT NULL AND a.expires_at>now() END
+      ORDER BY m.sent_at DESC,m.id DESC LIMIT 51`,[id,before||null,category]);
+    return {items:result.rows.slice(0,50),has_more:result.rows.length>50};
+  }
   @Post('conversations/:id/messages') async send(@Req() req:Request,@Param('id') id:string,@Body() input:unknown) {
     const user=await this.store.user(req.cookies?.session); parse(uuid,id); await this.store.member(user.id,id);
     const data=parse(z.object({client_id:uuid,body:z.string().trim().min(1).max(5000)}),input);

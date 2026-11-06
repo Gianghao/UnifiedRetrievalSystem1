@@ -4,6 +4,8 @@ This repository is an **incomplete local-development increment**, not a producti
 
 Conversations support one attachment per message: JPEG, PNG, GIF, WebP, MP3, WAV, Ogg, WebM, MP4, and PDF, up to 20 MiB. Images and supported audio/video play in the conversation; PDFs download. The browser's reported type and the file signature must match. Attachments are stored in PostgreSQL and accessible to conversation members. Their bytes become unavailable 30 days after sending and the API clears expired bytes while it is running. Deletion from backups and database storage reclamation are not covered. The message and filename remain visible after expiration.
 
+In a conversation, select the person's name at the top to open shared **Media**, **Files**, and **Links**. The panel includes older messages through its Load more button; expired attachments no longer appear.
+
 ## Run it from VS Code on Windows
 
 ### Requirements

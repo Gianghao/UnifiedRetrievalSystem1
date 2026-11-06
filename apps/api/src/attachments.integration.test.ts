@@ -44,8 +44,25 @@ test('attachments require membership, persist, support ranges and expire', {skip
     assert.equal((await fetch(file,{headers:{cookie:'session=token-c'}})).status,404);
     const ranged=await fetch(file,{headers:{cookie:'session=token-b',range:'bytes=0-3'}});
     assert.equal(ranged.status,206); assert.equal(await ranged.text(),'%PDF');
+    const shared=(type:string,token='token-b',before?:string)=>fetch(`${base}/api/conversations/${convo}/shared?${new URLSearchParams({type,...(before?{before}:{})})}`,{headers:{cookie:`session=${token}`}});
+    assert.equal((await shared('files','token-c')).status,404);
+    const files=await (await shared('files')).json() as {items:Array<{id:string}>};
+    assert.equal(files.items.length,1); assert.equal(files.items[0].id,messages[0].id);
+    const imageParams=new URLSearchParams({client_id:randomUUID(),filename:'photo.png',type:'image/png'});
+    assert.equal((await fetch(`${base}/api/conversations/${convo}/attachments?${imageParams}`,{method:'POST',headers:{origin:'http://localhost:3000',cookie:'session=token-a','content-type':'application/octet-stream'},body:Buffer.from('89504e470d0a1a0a00000000','hex')})).status,201);
+    const media=await (await shared('media')).json() as {items:Array<{filename:string}>};
+    assert.equal(media.items.length,1); assert.equal(media.items[0].filename,'photo.png');
+    await pool.query("INSERT INTO messages(conversation_id,sender_id,client_id,body) SELECT $1,$2,gen_random_uuid(),'Visit https://example.com/' || n FROM generate_series(1,52) n",[convo,a]);
+    await pool.query("INSERT INTO messages(conversation_id,sender_id,client_id,body,deleted_at) VALUES($1,$2,gen_random_uuid(),'https://deleted.example',now())",[convo,a]);
+    const first=await (await shared('links')).json() as {items:Array<{id:string}>;has_more:boolean};
+    assert.equal(first.items.length,50); assert.equal(first.has_more,true);
+    const second=await (await shared('links','token-b',first.items[49].id)).json() as {items:Array<{id:string}>;has_more:boolean};
+    assert.equal(second.items.length,2); assert.equal(second.has_more,false);
+    assert.equal(new Set([...first.items,...second.items].map(item=>item.id)).size,52);
     await pool.query("UPDATE attachments SET expires_at=now()-interval '1 second'");
     assert.equal((await fetch(file,{headers:{cookie:'session=token-b'}})).status,404);
+    assert.equal(((await (await shared('files')).json()) as {items:unknown[]}).items.length,0);
+    assert.equal(((await (await shared('media')).json()) as {items:unknown[]}).items.length,0);
   } finally {
     if(child){child.kill(); await new Promise<void>(resolve=>child!.once('exit',()=>resolve()));}
     await pool.end(); await admin.query(`DROP SCHEMA ${schema} CASCADE`); await admin.end();
