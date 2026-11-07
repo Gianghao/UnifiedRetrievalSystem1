@@ -8,6 +8,33 @@
 6. **Grounded answers:** add optional local generation only after citations can be verified against retrieved evidence.
 7. **Evaluation and operations:** add a versioned synthetic/consented corpus, reproducible metrics, performance and failure tests, security review, and recovery documentation.
 
+## Design and delivery checklist
+
+Keep this checklist current as work lands. The architecture, layer boundaries, and intended data flows are described in the [development guide](development-guide.md).
+
+### Architecture and API
+
+- [ ] Add a use-case view for users, conversations, media processing, retrieval, and operations.
+- [ ] Add logical and deployment views that match the actual web, API, database, realtime, and planned worker services.
+- [ ] Document the relational schema and relationships, including processing jobs, source-linked chunks, and evaluation records when introduced.
+- [ ] Publish API contracts for authentication, contacts/conversations, messages, attachments, processing, search, and answers, including payloads, errors, access checks, and retry behavior.
+
+### Product capabilities
+
+- [ ] Add user profile read/update and account deletion flows with session revocation and data-retention behavior.
+- [ ] Decide and implement message edit, delete, and reply behavior, including how changes affect derived retrieval evidence.
+- [ ] Add attachment deletion and metadata management with cleanup of derived artifacts, caches, and retained copies.
+- [ ] Build durable asynchronous ingestion for PDF pages, audio transcription, and video audio tracks with source offsets, retries, and observable failures.
+- [ ] Establish an authorized keyword-search baseline before adding dense, hybrid, or reranked retrieval.
+- [ ] Add grounded answers that cite source messages, PDF pages, and media timestamps and decline when evidence is insufficient.
+- [ ] Build a versioned evaluation set and report retrieval quality, attribution accuracy, and latency separately from answer quality.
+
+### Release readiness
+
+- [ ] Add browser-level end-to-end coverage for sign-in, two-user messaging, media sharing, and conversation access controls.
+- [ ] Define malware scanning, backup/restore, object storage, and complete source-plus-derived data retention before production use.
+- [ ] Replace development OTP and secrets with production identity, configuration, and deployment procedures before public deployment.
+
 ## Decisions
 
 - This is a local development project. The first increment uses a development-only OTP provider; production must integrate a real provider and deployment secrets.
