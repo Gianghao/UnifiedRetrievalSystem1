@@ -91,4 +91,4 @@ The PostgreSQL concurrency test uses `TEST_DATABASE_URL` if set. The attachment 
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, change, security, and review expectations. Never commit `.env` files, credentials, Docker data, user attachments, model files, or local databases. Before staging, inspect `git status` and stage only files inside this repository.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, change, security, and review expectations. The [development guide](docs/development-guide.md) describes the product goal, current and planned architecture, collaboration rules, and design artifacts. Never commit `.env` files, credentials, Docker data, user attachments, model files, or local databases. Before staging, inspect `git status` and stage only files inside this repository.

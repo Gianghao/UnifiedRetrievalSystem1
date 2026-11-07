@@ -2,17 +2,20 @@
 
 ## Before changing code
 
-Read the [project vision](docs/project-vision.md), [implementation plan](docs/plan.md), and this guide. Keep the current prototype's limits clear in code and documentation. The application can read message and attachment content; it does not provide end-to-end encryption.
+Read the [project vision](docs/project-vision.md), [roadmap](docs/plan.md), and [development guide](docs/development-guide.md). Check the existing implementation before assuming a feature is complete. Keep prototype limitations clear in code and documentation: the server can read messages and attachments, and the app does not provide end-to-end encryption.
 
-## Development workflow
+## Collaboration workflow
 
-1. Start PostgreSQL and Redis with `docker compose up -d db redis`.
-2. Install dependencies with `npm ci`.
-3. Create a focused branch from the current project branch, for example `codex/attachment-gallery`.
-4. Make the smallest complete change that preserves conversation membership checks and existing data.
-5. Run `npm run build` and the relevant tests. Use a disposable database for integration tests.
-6. Review `git diff` and `git status`; stage only intended project files. Do not add the parent workspace directory.
-7. Commit with a short description of the behavior changed. Push a feature branch and open a pull request for review.
+1. Start from the current `main` branch (or the active integration branch when the team names one) and pull its latest changes.
+2. Create a focused branch using `codex/<short-topic>`, such as `codex/attachment-gallery`.
+3. Keep each change small enough to review and describe its user-visible behavior, data impact, and configuration or migration needs.
+4. Run `npm ci` when dependencies change or the checkout is new. Start PostgreSQL and Redis with `docker compose up -d db redis` when the change needs them.
+5. Run `npm run build` and the relevant tests before proposing the change. Use only a disposable database for integration tests.
+6. Review `git diff` and `git status`; stage only intended repository files. Never stage the parent workspace directory or local data.
+7. Use a concise commit message that names the behavior changed. Push the topic branch and open a pull request for review; do not push feature work directly to `main` unless the repository owner explicitly chooses a direct-push workflow.
+8. Respond to review feedback with focused follow-up commits and update docs alongside behavior changes.
+
+For layer boundaries and planned work, see the [development guide](docs/development-guide.md) and [roadmap](docs/plan.md).
 
 ## Data and security rules
 
@@ -30,3 +33,5 @@ Read the [project vision](docs/project-vision.md), [implementation plan](docs/pl
 - Include meaningful tests for authorization, persistence, retry behavior, and failure paths when relevant.
 - Update the README and technical docs when setup or system behavior changes.
 - Call out unimplemented behavior and remaining privacy or retention limits.
+- Keep architecture or data-flow docs current when introducing or moving a service boundary.
+- For retrieval changes, identify the corpus, model/configuration version, source-citation behavior, and evaluation metrics used.
