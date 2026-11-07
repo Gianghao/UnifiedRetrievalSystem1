@@ -1,72 +1,63 @@
-# Commonplace: local development
+# Commonplace
 
-This repository is an **incomplete local-development increment**, not a production-ready messaging or AI retrieval system. It currently contains a Next.js web app, a NestJS API, PostgreSQL schema/migration, Redis-backed rate limiting, and Docker Compose setup. Multimodal ingestion and AI retrieval are not implemented yet. Use disposable test accounts and data only; the development API prints OTP codes and phone numbers to its logs. The server can read message contents; end-to-end encryption is not implemented.
+Commonplace is a local-first messaging prototype with a planned unified retrieval assistant. The assistant is intended to answer questions using evidence shared in a conversation, such as messages and attached documents or media. The current project is the messaging and shared-item foundation; **retrieval, transcription, embeddings, and answer generation are not implemented yet**.
 
-Conversations support one attachment per message: JPEG, PNG, GIF, WebP, MP3, WAV, Ogg, WebM, MP4, and PDF, up to 20 MiB. Images and supported audio/video play in the conversation; PDFs download. The browser's reported type and the file signature must match. Attachments are stored in PostgreSQL and accessible to conversation members. Their bytes become unavailable 30 days after sending and the API clears expired bytes while it is running. Deletion from backups and database storage reclamation are not covered. The message and filename remain visible after expiration.
+This is a development prototype. Do not use it for sensitive conversations. The local OTP code appears in API logs, there is no end-to-end encryption, and attachment expiration is not a verified secure-erasure or backup-retention policy.
 
-In a conversation, select the person's name at the top to open shared **Media**, **Files**, and **Links**. The panel includes older messages through its Load more button; expired attachments no longer appear.
+## Current status
 
-## Run it from VS Code on Windows
+- Phone-based registration and sign-in with a development-only OTP flow.
+- Mutual contacts and one-to-one conversations.
+- Persisted text messages, read receipts, pagination, and WebSocket refresh notifications.
+- JPEG, PNG, GIF, WebP, MP3, WAV, Ogg, WebM, MP4, and PDF attachments up to 20 MiB each. The API checks file signatures and requires conversation membership to upload or retrieve files.
+- A conversation details panel opened from the other person's name. Its **Media**, **Files**, and **Links** tabs browse shared items with pagination.
+- Attachment bytes expire 30 days after sending. While the API is running, hourly cleanup clears expired bytes; the filename and message remain. Database storage space is not reclaimed automatically.
+
+Known gaps include production SMS, full session management and account recovery, blocking/reporting, message edits/deletion/replies, malware scanning, external object storage, data backup policy, complete browser end-to-end tests, and all AI processing and retrieval capabilities. Read [the project vision](docs/project-vision.md) and [the implementation plan](docs/plan.md) before adding features that depend on retrieval or media processing.
+
+## Run locally on Windows
 
 ### Requirements
 
-- VS Code and Git for Windows
-- Docker Desktop with its Linux/WSL 2 engine running and the Compose plugin available
-- Ports `3000`, `3001`, `55433`, and `6379` available on localhost
+- Visual Studio Code and Git for Windows
+- Docker Desktop with its WSL 2 engine running and the Docker Compose plugin
+- Ports `3000`, `3001`, `55433`, and `6379` free on localhost
 
-The quickest setup uses Docker for the web app, API, PostgreSQL, and Redis, so Node.js does not need to be installed on Windows for this route.
+Open `D:\ChatGPT\Hao\unified-messaging` in VS Code, start Docker Desktop, then use **Terminal → New Terminal**:
 
-**Disk space:** Docker Desktop's virtual disk was last observed under `D:\DockerData\DockerDesktopWSL`. PostgreSQL and Redis data locations are set in `docker-compose.yml`. Check available disk space before large downloads or builds.
+```powershell
+docker compose up -d --build
+```
 
-1. In VS Code, choose **File → Open Folder…** and open `D:\ChatGPT\Hao\unified-messaging`.
-2. Start Docker Desktop and wait until it reports that the engine is running.
-3. In VS Code, choose **Terminal → New Terminal**. Confirm the terminal is in the project root:
+Open [http://localhost:3000](http://localhost:3000). To view a development sign-in code, open another terminal and run:
 
-   ```powershell
-   Get-Location
-   ```
+```powershell
+docker compose logs -f api
+```
 
-   The path should end in `unified-messaging`.
+Use disposable accounts and valid international phone numbers. Registration and sign-in are separate: register, request a new code, then sign in. Both users must add each other's numbers to create a conversation. From the chat, select the other person's name to browse shared media, files, and links.
 
-4. Build and start the app and its local dependencies:
-
-   ```powershell
-   docker compose up --build
-   ```
-
-   Leave this terminal running. On the first start Docker downloads the required images and builds the two app containers.
-
-5. Open [http://localhost:3000](http://localhost:3000). To find the development verification code, open another VS Code terminal in the project root and run:
-
-   ```powershell
-   docker compose logs -f api
-   ```
-
-   Use disposable phone numbers in international format (for example, `+12025550123`). Register and sign in each test user separately. Both people must add each other's numbers before the conversation appears. Press `Ctrl+C` to stop following logs; this does not stop the app.
-
-To stop the app, return to the terminal running Compose and press `Ctrl+C`, then run:
+Stop the app with:
 
 ```powershell
 docker compose down
 ```
 
-The PostgreSQL and Redis data locations are configured in `docker-compose.yml`; keep those directories if you need the data. The local PostgreSQL port is `55433` to avoid colliding with a Windows PostgreSQL service on `5432`.
+This preserves the data directories configured in `docker-compose.yml`. Do not remove them if you need the local database or Redis data. Docker Desktop stores its virtual disk at `D:\DockerData\DockerDesktopWSL` on the original development machine; contributors can set a different Docker disk location in Docker Desktop settings.
 
-### Upgrade an existing local database
+### Upgrade an existing database
 
-Compose only runs the migration files automatically when the PostgreSQL data directory is first initialized. For an existing database created before attachments were added, start Docker Desktop and the database, then apply the additive attachment migration once from a PowerShell terminal in the project folder:
+Compose runs SQL files in `db/migrations` automatically only when PostgreSQL initializes an empty data directory. If your database predates attachment support, apply the additive migration once, then rebuild:
 
 ```powershell
 docker compose up -d db
 Get-Content -Raw db/migrations/002_attachments.sql | docker compose exec -T db psql -v ON_ERROR_STOP=1 -U app -d messaging
-docker compose up --build
+docker compose up -d --build
 ```
 
-The migration preserves existing messages. Check available Docker disk space before rebuilding, particularly if Docker Desktop stores its images on C:.
+### Run services from VS Code for development
 
-### Start the API and web app directly from VS Code (optional)
-
-This route is useful for editing and hot reload, but you must first run PostgreSQL and Redis separately (Docker is convenient for those two services). Starting the Compose database for the first time automatically applies `db/migrations/001_foundation.sql` to its empty data directory; existing databases are not migrated automatically.
+Keep PostgreSQL and Redis running through Compose, then install workspace dependencies:
 
 ```powershell
 docker compose up -d db redis
@@ -77,25 +68,18 @@ $env:OTP_SECRET = 'local-development-secret-change-before-sharing'
 $env:WEB_ORIGIN = 'http://localhost:3000'
 ```
 
-The secret above is for local development only.
-
-Then open two VS Code terminals, both at the project root. Run the API in one:
+For an existing database, apply any migration that has not already been applied. Start the API in one terminal and the web app in another:
 
 ```powershell
 npm run dev:api
-```
-
-Run the web app in the other:
-
-```powershell
 npm run dev:web
 ```
 
-Visit [http://localhost:3000](http://localhost:3000). The API compiles once when started; restart it after API code changes. Stop host processes with `Ctrl+C`. For the Docker version, OTP output is available with `docker compose logs -f api`.
+The API compiles once on startup. Restart it after API changes.
 
-## Available checks
+## Checks
 
-From the project root in a VS Code terminal:
+From the repository root:
 
 ```powershell
 npm run build
@@ -103,45 +87,8 @@ npm test
 npm audit --omit=dev
 ```
 
-The PostgreSQL-backed OTP concurrency test is skipped unless `TEST_DATABASE_URL` points to a **dedicated disposable test database**. The attachment integration test also requires `TEST_REDIS_URL` and a freshly built API (`npm run build -w @unified/api`). The tests create and drop isolated database schemas. Do not point them at a database containing valuable data. These checks do not verify the whole authentication, WebSocket, or browser flow end to end.
+The PostgreSQL concurrency test uses `TEST_DATABASE_URL` if set. The attachment integration test also requires `TEST_REDIS_URL` and a built API. Both tests create and remove isolated schemas; use a disposable local test database. Never point them at a database with valuable data.
 
-## Push the project to GitHub
+## Contributing
 
-Target repository: [Gianghao/UnifiedRetrievalSystem1](https://github.com/Gianghao/UnifiedRetrievalSystem1).
-
-First sign in to the `Gianghao` GitHub account in VS Code (Accounts icon) and make sure that account has write access to the repository. In VS Code, open **Terminal → New Terminal** at `D:\ChatGPT\Hao\unified-messaging`, then check the branch and pending files:
-
-```powershell
-git status
-git branch --show-current
-```
-
-The foundation code is already committed locally on `codex/messaging-foundation`. To send that branch to GitHub, run:
-
-```powershell
-git remote add origin https://github.com/Gianghao/UnifiedRetrievalSystem1.git
-git push -u origin codex/messaging-foundation
-```
-
-If Git reports that `origin` already exists, update it and retry:
-
-```powershell
-git remote set-url origin https://github.com/Gianghao/UnifiedRetrievalSystem1.git
-git push -u origin codex/messaging-foundation
-```
-
-VS Code or Git Credential Manager should open a browser to authenticate. Approve GitHub access as `Gianghao`. Never paste a password or personal access token into the source files or commit one. After the push, open the repository on GitHub, choose **Compare & pull request** for `codex/messaging-foundation`, review the changes, and create the pull request. This keeps the current GitHub `main` branch intact until the changes are reviewed. If the remote branch already contains commits, fetch and inspect them before pushing; do not force-push.
-
-For later changes, stage and commit only project files, then push the branch:
-
-```powershell
-git add README.md
-git commit -m "Document local setup and GitHub workflow"
-git push
-```
-
-If you edit other project files, stage their explicit paths too. Do not use `git add ..` or stage the parent `Hao` directory: it contains files unrelated to this repository and may contain private data. `.env` files, dependency directories, Docker data, local test database files, logs, and VHDX files are ignored by this repository; verify `git status` before each commit.
-
-## Not implemented yet
-
-The project does not yet provide a production SMS provider, full session management, contact blocking/reporting, message edits/deletion/replies, malware scanning, PDF/audio/video processing, embeddings, reranking, retrieval/search, grounded answers, citations, summaries, or model evaluation. Attachment expiration is a local prototype and is not a complete backup or secure-erasure policy. See [the implementation plan](docs/plan.md) for the intended phases.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, change, security, and review expectations. Never commit `.env` files, credentials, Docker data, user attachments, model files, or local databases. Before staging, inspect `git status` and stage only files inside this repository.

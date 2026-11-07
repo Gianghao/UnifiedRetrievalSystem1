@@ -7,7 +7,7 @@ services:
       POSTGRES_DB: messaging
     ports: ["127.0.0.1:55433:5432"]
     volumes:
-      - ./DockerData/postgres:/var/lib/postgresql/data
+      - D:/DockerData/postgres:/var/lib/postgresql/data
       - ./db/migrations:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U app -d messaging"]
@@ -19,7 +19,7 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     ports: ["127.0.0.1:6379:6379"]
     volumes:
-      - ./DockerData/redis:/data
+      - D:/DockerData/redis:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s

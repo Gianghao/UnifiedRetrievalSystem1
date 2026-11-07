@@ -1,10 +1,12 @@
 # Implementation plan
 
-1. Establish a PostgreSQL-backed messaging foundation with phone verification, explicit sessions, contacts, durable idempotent messages, and reconnect synchronization.
-2. Add private media, background processing, and retention before exposing upload controls.
-3. Add the common evidence contract, ingestion, authorized retrieval, and evaluation.
-4. Add grounded answers only after evidence and citations can be verified.
-5. Exercise the system under failure and load, and document operational limits.
+1. **Messaging foundation (prototype):** PostgreSQL-backed phone verification, explicit sessions, mutual contacts, durable idempotent messages, and reconnect synchronization.
+2. **Initial attachments (prototype):** private membership-checked media, file, and link views; 20 MiB uploads; additive migration; 30-day attachment byte expiration. Full backup deletion, malware scanning, object storage, and browser end-to-end coverage remain open.
+3. **Processing foundation:** define the canonical evidence contract, durable processing jobs, retries, and retention for all derived artifacts.
+4. **Ingestion:** extract PDF text with page references, transcribe audio, and extract audio from video while retaining timestamps. Keep ordinary messaging available when workers fail.
+5. **Authorized retrieval:** establish a keyword baseline, then add dense retrieval, reranking, and optional hybrid fusion with membership filtering before results are returned.
+6. **Grounded answers:** add optional local generation only after citations can be verified against retrieved evidence.
+7. **Evaluation and operations:** add a versioned synthetic/consented corpus, reproducible metrics, performance and failure tests, security review, and recovery documentation.
 
 ## Decisions
 
