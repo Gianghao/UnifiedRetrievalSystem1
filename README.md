@@ -92,3 +92,7 @@ The PostgreSQL concurrency test uses `TEST_DATABASE_URL` if set. The attachment 
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, change, security, and review expectations. The [development guide](docs/development-guide.md) describes the product goal, current and planned architecture, collaboration rules, and design artifacts. Never commit `.env` files, credentials, Docker data, user attachments, model files, or local databases. Before staging, inspect `git status` and stage only files inside this repository.
+
+## Four-week retrieval research
+
+The five member-specific research briefs and their shared experimental rules are in [docs/team-research](docs/team-research/README.md). They are based on the current research proposal and are intended to guide the first presentation and prototype evaluation.
