@@ -1,7 +1,7 @@
-# Thiện — Speech Recognition and Media Processing Researcher
+# Tài — Speech Recognition and Media Processing Researcher
 
 **Team role:** Member 2 in the research proposal  
-**Primary ownership:** Make audio and video speech searchable while measuring how recognition errors affect retrieval. Your AI-detection strength is applied here to spotting and characterizing model-produced transcript errors rather than assuming ASR text is ground truth.
+**Primary ownership:** Make audio and video speech searchable while measuring how recognition errors affect retrieval.
 
 ## Mission
 
@@ -49,7 +49,7 @@ Produce source-linked searchable text from audio and video, and design a small c
 ### Week 3 — Paired transcript pilot
 
 - Prepare clean and ASR variants for the same recordings where possible.
-- Compute WER and run retrieval comparisons using identical queries and chunking, coordinating with Quân, Tai, and Xuân Ngân.
+- Compute WER and run retrieval comparisons using identical queries and chunking, coordinating with Quân, Thiện, and Xuân Ngân.
 - Review examples where ASR changes the retrievability of important evidence.
 
 ### Week 4 — Results and demonstration
@@ -69,7 +69,7 @@ Produce source-linked searchable text from audio and video, and design a small c
 
 ## Handoffs and presentation segment
 
-Provide Quân and Tai searchable segment text plus source/time metadata; give Xuân Ngân both corrected and ASR variants with alignment notes; give Hao model settings, WER method, failures, and runtime. Your presentation section explains how media becomes evidence and what the pilot says about ASR-error propagation—without claiming general performance from a small sample.
+Provide Quân and Thiện searchable segment text plus source/time metadata; give Xuân Ngân both corrected and ASR variants with alignment notes; give Hao model settings, WER method, failures, and runtime. Your presentation section explains how media becomes evidence and what the pilot says about ASR-error propagation—without claiming general performance from a small sample.
 
 ## Risks to watch
 

@@ -1,4 +1,4 @@
-# Tai — BM25, Retrieval Strategies, and Reranking Researcher
+# Thiện — BM25, Retrieval Strategies, and Reranking Researcher
 
 **Team role:** Member 4 in the research proposal  
 **Primary ownership:** Build the lexical baseline and reranking comparison, and quantify quality–latency trade-offs.
@@ -70,7 +70,7 @@ Implement a proper BM25 baseline and a dense-plus-cross-encoder reranking condit
 
 ## Handoffs and presentation segment
 
-Coordinate candidate inputs/results with Quân; provide ranked run outputs and timing metadata to Xuân Ngân; agree on the controlled matrix with Hao; consume Thiện's transcript variants for the ASR experiment. Your presentation section defines BM25 and reranking, shows how they compare, and makes the added latency visible.
+Coordinate candidate inputs/results with Quân; provide ranked run outputs and timing metadata to Xuân Ngân; agree on the controlled matrix with Hao; consume Tài's transcript variants for the ASR experiment. Your presentation section defines BM25 and reranking, shows how they compare, and makes the added latency visible.
 
 ## Risks to watch
 

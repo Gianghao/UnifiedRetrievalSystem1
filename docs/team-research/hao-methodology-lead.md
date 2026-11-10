@@ -31,7 +31,7 @@ Lead the team to a reproducible four-week research demonstration of unified retr
 ### Week 1 — Scope and method
 
 - Publish the one-page research question, hypotheses, related-work boundary, and experiment matrix.
-- Agree on canonical source/chunk metadata and evaluation terms with Thiện, Quân, Tai, and Xuân Ngân.
+- Agree on canonical source/chunk metadata and evaluation terms with Tài, Quân, Thiện, and Xuân Ngân.
 - Record which model choices are provisional and what evidence is needed before locking them.
 
 ### Week 2 — Component interfaces
@@ -43,7 +43,7 @@ Lead the team to a reproducible four-week research demonstration of unified retr
 ### Week 3 — Integration and pilot
 
 - Coordinate one small end-to-end corpus across all four source types.
-- Ask Xuân Ngân to validate pilot labels and Tai/Quân to compare initial runs under identical conditions.
+- Ask Xuân Ngân to validate pilot labels and Thiện/Quân to compare initial runs under identical conditions.
 - Document bugs, protocol changes, and why any changes are necessary; do not silently change the benchmark mid-comparison.
 
 ### Week 4 — Reproducible presentation
@@ -63,7 +63,7 @@ Lead the team to a reproducible four-week research demonstration of unified retr
 
 ## Handoffs and presentation segment
 
-Request model assumptions and runtime settings from Thiện and Quân; retrieval configuration and latency breakdown from Tai; dataset definition, label rules, and metric results from Xuân Ngân. Your presentation section frames the problem, explains the controlled methodology, connects each component to the research question, and closes with limitations and the next experiment.
+Request model assumptions and runtime settings from Tài and Quân; retrieval configuration and latency breakdown from Thiện; dataset definition, label rules, and metric results from Xuân Ngân. Your presentation section frames the problem, explains the controlled methodology, connects each component to the research question, and closes with limitations and the next experiment.
 
 ## Risks to watch
 

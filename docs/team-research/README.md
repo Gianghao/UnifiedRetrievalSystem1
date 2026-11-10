@@ -7,12 +7,12 @@ These five member briefs turn the team's research proposal, **Unified Retrieval 
 | Member | Workstream | Individual brief |
 |---|---|---|
 | Hào — team leader | Research methodology, coordination, and integration | [Hao](hao-methodology-lead.md) |
-| Tài | Speech recognition, media processing, and ASR-error analysis | [Thiện](thien-asr-media-processing.md) |
+| Tài | Speech recognition, media processing, and ASR-error analysis | [Tài](tai-asr-media-processing.md) |
 | Quân | Dense retrieval and embeddings | [Quân](quan-dense-retrieval.md) |
-| Thiện | BM25, retrieval strategies, and reranking | [Tai](tai-retrieval-reranking.md) |
+| Thiện | BM25, retrieval strategies, and reranking | [Thiện](thien-retrieval-reranking.md) |
 | Xuân Ngân | Benchmark, evidence annotation, and evaluation | [Xuân Ngân](xuan-ngan-benchmark-evaluation.md) |
 
-This mapping follows the five roles in the proposal and the strengths provided by the team. Thiện's AI-detection strength is applied to examining how recognition errors affect downstream search; Quân's AI and broad research background supports embedding work; Xuân Ngân's research and product-development strengths support a usable, defensible benchmark. Confirm the assignment together in the first team meeting if anyone prefers to swap ownership.
+This mapping follows the five roles in the proposal and the strengths provided by the team. Quân's AI and broad research background supports embedding work; Xuân Ngân's research and product-development strengths support a usable, defensible benchmark. Confirm the assignment together in the first team meeting if anyone prefers to swap ownership.
 
 ## Shared research objective
 

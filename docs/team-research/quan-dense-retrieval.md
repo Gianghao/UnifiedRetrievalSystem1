@@ -20,8 +20,8 @@ Build the dense-retrieval condition for the unified prototype using BGE-M3 dense
 
 - Study embedding and vector-similarity concepts and BGE-M3's documented model characteristics, training objectives, multilingual behavior, and intended use.
 - Compare BGE-M3 with one alternative embedding model using a small, fixed set of representative queries if time permits. Do not change the primary model without documenting why.
-- Keep the experiment to BGE-M3's dense output initially. Do not label its learned sparse output as BM25; the BM25 baseline is a separate lexical method owned by Tai.
-- Define a chunking configuration shared across all text forms and coordinate it with Thiện (transcripts), Tai (retrieval), and Xuân Ngân (labels).
+- Keep the experiment to BGE-M3's dense output initially. Do not label its learned sparse output as BM25; the BM25 baseline is a separate lexical method owned by Thiện.
+- Define a chunking configuration shared across all text forms and coordinate it with Tài (transcripts), Thiện (retrieval), and Xuân Ngân (labels).
 - Make a small diagnostic set of paraphrase, exact-match, multilingual (if included), and cross-source queries.
 - Record model revision, tokenizer, embedding dimensions, normalization, vector distance operator, batch size, hardware, indexing time, and query latency.
 
@@ -38,7 +38,7 @@ Build the dense-retrieval condition for the unified prototype using BGE-M3 dense
 ### Week 1 — Model and interface
 
 - Write the BGE-M3 model note and a concise comparison to a plausible alternative.
-- Agree with Hao on chunk/result schemas and with Thiện/Tai/Xuân Ngân on shared data assumptions.
+- Agree with Hao on chunk/result schemas and with Tài/Thiện/Xuân Ngân on shared data assumptions.
 
 ### Week 2 — Minimum dense-search demo
 
@@ -49,7 +49,7 @@ Build the dense-retrieval condition for the unified prototype using BGE-M3 dense
 ### Week 3 — Controlled comparison
 
 - Run dense retrieval on the same pilot corpus and questions used for BM25.
-- Supply ranked outputs and settings to Xuân Ngân for the evaluator; coordinate candidate outputs with Tai for the reranker.
+- Supply ranked outputs and settings to Xuân Ngân for the evaluator; coordinate candidate outputs with Thiện for the reranker.
 - Analyze retrieval failures by source and question category.
 
 ### Week 4 — Findings and reproducibility
@@ -69,7 +69,7 @@ Build the dense-retrieval condition for the unified prototype using BGE-M3 dense
 
 ## Handoffs and presentation segment
 
-Give Tai interchangeable candidate/result interfaces and dense top-k results for reranking; give Xuân Ngân ranked runs and exact configuration; give Thiện the chunking rules for transcript experiments; give Hao model trade-offs, failure cases, and reproducibility notes. Your presentation section explains embeddings, dense similarity, the expected paraphrase benefit, and measured limitations.
+Give Thiện interchangeable candidate/result interfaces and dense top-k results for reranking; give Xuân Ngân ranked runs and exact configuration; give Tài the chunking rules for transcript experiments; give Hao model trade-offs, failure cases, and reproducibility notes. Your presentation section explains embeddings, dense similarity, the expected paraphrase benefit, and measured limitations.
 
 ## Risks to watch
 

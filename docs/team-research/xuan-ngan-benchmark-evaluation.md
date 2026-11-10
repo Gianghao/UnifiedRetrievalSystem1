@@ -30,7 +30,7 @@ Create a small, defensible evaluation set for the four source categories, implem
 ## Technical work
 
 - Build a machine-readable dataset with question IDs, question text, answerability, category, required evidence groups, acceptable alternatives, source IDs, and source locations.
-- Implement evaluation scripts that consume ranked retrieval results from Quân and Tai and output per-query scores plus aggregate tables.
+- Implement evaluation scripts that consume ranked retrieval results from Quân and Thiện and output per-query scores plus aggregate tables.
 - Verify source-location matching for PDF pages and audio/video time spans.
 - Produce reproducible tables by retrieval configuration, source/query category, and single- versus cross-source questions.
 - Keep answer correctness/faithfulness separate from retrieval ranking and evidence coverage.
@@ -41,7 +41,7 @@ Create a small, defensible evaluation set for the four source categories, implem
 ### Week 1 — Protocol and annotation rules
 
 - Deliver metric definitions and a draft annotation guide.
-- Agree with Hao on question categories, with Thiện on paired transcript cases, and with Quân/Tai on result formats.
+- Agree with Hao on question categories, with Tài on paired transcript cases, and with Quân/Thiện on result formats.
 
 ### Week 2 — Pilot dataset and scorer
 
@@ -73,7 +73,7 @@ Create a small, defensible evaluation set for the four source categories, implem
 
 ## Handoffs and presentation segment
 
-Give Hao metric definitions and clean result tables; give Quân/Tai sample labels and expected result schema; provide Thiện paired clean/ASR questions and evidence locations; ask all members to annotate or review a small shared sample. Your presentation section explains what “success” means, how cross-source completeness is scored, and what the pilot can and cannot establish.
+Give Hao metric definitions and clean result tables; give Quân/Thiện sample labels and expected result schema; provide Tài paired clean/ASR questions and evidence locations; ask all members to annotate or review a small shared sample. Your presentation section explains what “success” means, how cross-source completeness is scored, and what the pilot can and cannot establish.
 
 ## Risks to watch
 
