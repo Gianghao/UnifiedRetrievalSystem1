@@ -79,3 +79,10 @@ Coordinate candidate inputs/results with Quân; provide ranked run outputs and t
 - Mixing candidate-generation latency with reranking latency or reporting only an average.
 - Changing top-k or chunking between runs without logging it.
 - Claiming hybrid improvement from a tiny pilot without uncertainty or replication.
+
+
+## Note
+Question: "Who is picking up the contract on Friday?"
+- Many chunks mention "contract", "pick up" and "Friday", so dense search ranks them all high because they're about the same topic.
+- The real answer is a short later message: "Change of plan, Minh will get it Friday, not Jimmy." Dense search puts it at rank 27.
+- Only the top 10 go to the LLM. The LLM never sees rank 27, but it does see an older chunk saying "Jimmy will pick it up Friday", so it confidently answers Jimmy. That answer is wrong.
