@@ -1,0 +1,11 @@
+flowchart TB
+    accTitle: Tài's outputs and their recipients
+    accDescr: Tài supplies source-linked text to retrieval owners, transcript pairs to evaluation, and processing configurations and limitations to the integration lead.
+    tai["Tài<br/>Media processing and ASR analysis"] -->|"Source-linked text and intervals"| quan["Quân<br/>Dense indexing and retrieval"]
+    tai -->|"Same searchable text and metadata"| thien["Thiện<br/>BM25 and reranking"]
+    tai -->|"Corrected and ASR pairs, WER, alignment"| ngan["Xuân Ngân<br/>Benchmark and scoring"]
+    tai -->|"Model, settings, runtime, limitations"| hao["Hào<br/>Methodology and integration"]
+    classDef own fill:#ddf3ec,stroke:#13795b,color:#123c30,stroke-width:2px;
+    classDef team fill:#edf2fb,stroke:#4a6396,color:#233855;
+    class tai own;
+    class quan,thien,ngan,hao team;

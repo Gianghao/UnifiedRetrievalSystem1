@@ -11,3 +11,6 @@ DockerData/
 *.log
 *.tsbuildinfo
 CLAUDE.md
+.local-research/
+.venv/
+__pycache__/

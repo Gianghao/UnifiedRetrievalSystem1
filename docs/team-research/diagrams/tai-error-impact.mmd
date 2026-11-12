@@ -1,0 +1,14 @@
+flowchart TB
+    accTitle: Two ways ASR errors can affect the system
+    accDescr: Recognition errors can change the words used for matching, or change facts within a passage that is still retrieved. The original recording is used to inspect both pathways.
+    error["Recognition error"] --> term["Search term changes<br/>Atlas becomes Alice"]
+    error --> fact["Fact changes<br/>Nine becomes five"]
+    term --> miss["Relevant interval may be<br/>ranked lower or missed"]
+    fact --> found["Relevant interval may still<br/>be retrieved successfully"]
+    found --> wrong["Retrieved transcript contains<br/>the wrong time"]
+    miss --> inspect["Inspect the recording,<br/>transcript, ranks, and citation"]
+    wrong --> inspect
+    classDef warning fill:#fff3d6,stroke:#a67916,color:#5a430c;
+    classDef own fill:#ddf3ec,stroke:#13795b,color:#123c30;
+    class error,miss,wrong warning;
+    class inspect own;
