@@ -96,3 +96,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, change, security, and review 
 ## Four-week retrieval research
 
 The five member-specific research briefs and their shared experimental rules are in [docs/team-research](docs/team-research/README.md). They are based on the current research proposal and are intended to guide the first presentation and prototype evaluation.
+
+The [PDF page extraction experiment](tools/pdf-extraction/README.md) is a standalone local processing tool for Tài's workstream. It exports page-numbered text records with source metadata and reports empty or failed pages. Automatic attachment processing remains planned work.
+
+The [Vietnamese audio transcription experiment](tools/audio-transcription/README.md) produces timestamped ASR segments using a pinned multilingual Whisper small model on CPU. Its output records source IDs, processing settings, and review status for the team's later retrieval experiments.

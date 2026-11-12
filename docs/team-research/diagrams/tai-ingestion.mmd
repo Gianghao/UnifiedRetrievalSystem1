@@ -1,0 +1,17 @@
+flowchart TB
+    accTitle: Media processing paths converge on source-linked text
+    accDescr: PDFs yield page text. Audio is prepared and transcribed. Video supplies an audio stream whose original offsets are retained. Empty or failed extraction is reported for review.
+    pdf["PDF"] --> extract["Extract text per physical page"]
+    audio["Audio"] --> prepare["Decode and prepare audio"]
+    video["Video"] --> select["Select audio stream<br/>Retain original time offsets"]
+    select --> prepare
+    prepare --> asr["ASR<br/>Timestamped transcript segments"]
+    extract --> review{"Text available?"}
+    review -->|Yes| text["Text plus original source location"]
+    review -->|No| empty["Report no_text<br/>Review blank or scanned page"]
+    asr --> text
+    text --> records["Evidence records<br/>Source ID, page or interval,<br/>variant and processor settings"]
+    classDef own fill:#ddf3ec,stroke:#13795b,color:#123c30;
+    classDef warning fill:#fff3d6,stroke:#a67916,color:#5a430c;
+    class extract,prepare,select,asr,records own;
+    class empty warning;

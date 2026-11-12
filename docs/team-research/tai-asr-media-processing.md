@@ -3,6 +3,8 @@
 **Team role:** Member 2 in the research proposal  
 **Primary ownership:** Make audio and video speech searchable while measuring how recognition errors affect retrieval.
 
+The [visual role guide](tai-role-guide.md) explains the complete flow, concepts, experiment, and team handoffs with diagrams.
+
 ## Mission
 
 Produce source-linked searchable text from audio and video, and design a small controlled comparison that shows whether recognition errors change retrieval effectiveness. Also support PDF extraction so every modality enters the unified text pipeline with reliable source locations.
