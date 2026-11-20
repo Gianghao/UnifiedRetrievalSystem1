@@ -1,6 +1,6 @@
 # Commonplace
 
-Commonplace is a local-first messaging prototype with a planned unified retrieval assistant. The assistant is intended to answer questions using evidence shared in a conversation, such as messages and attached documents or media. The current project is the messaging and shared-item foundation; **retrieval, transcription, embeddings, and answer generation are not implemented yet**.
+Commonplace is a local-first messaging prototype with a planned unified retrieval assistant. The assistant is intended to answer questions using evidence shared in a conversation, such as messages and attached documents or media. The app currently supports messaging and shared items. Standalone research tools export PDF text and audio/video transcripts as JSON.
 
 This is a development prototype. Do not use it for sensitive conversations. The local OTP code appears in API logs, there is no end-to-end encryption, and attachment expiration is not a verified secure-erasure or backup-retention policy.
 
@@ -13,7 +13,7 @@ This is a development prototype. Do not use it for sensitive conversations. The 
 - A conversation details panel opened from the other person's name. Its **Media**, **Files**, and **Links** tabs browse shared items with pagination.
 - Attachment bytes expire 30 days after sending. While the API is running, hourly cleanup clears expired bytes; the filename and message remain. Database storage space is not reclaimed automatically.
 
-Known gaps include production SMS, full session management and account recovery, blocking/reporting, message edits/deletion/replies, malware scanning, external object storage, data backup policy, complete browser end-to-end tests, and all AI processing and retrieval capabilities. Read [the project vision](docs/project-vision.md) and [the implementation plan](docs/plan.md) before adding features that depend on retrieval or media processing.
+Known gaps include production SMS, full session management and account recovery, blocking/reporting, message edits/deletion/replies, malware scanning, external object storage, data backup policy, complete browser end-to-end tests, and in-app processing, retrieval, and answer generation. Read [the project vision](docs/project-vision.md) and [the implementation plan](docs/plan.md) before adding features that depend on retrieval or media processing.
 
 ## Run locally on Windows
 
@@ -99,4 +99,4 @@ The five member-specific research briefs and their shared experimental rules are
 
 The [PDF page extraction experiment](tools/pdf-extraction/README.md) is a standalone local processing tool for Tài's workstream. It exports page-numbered text records with source metadata and reports empty or failed pages. Automatic attachment processing remains planned work.
 
-The [Vietnamese audio transcription experiment](tools/audio-transcription/README.md) produces timestamped ASR segments using a pinned multilingual Whisper small model on CPU. Its output records source IDs, processing settings, and review status for the team's later retrieval experiments.
+The [audio and video transcription experiment](tools/audio-transcription/README.md) produces timestamped ASR segments using a pinned multilingual Whisper small model on CPU. Pass `--video` to transcribe a video's first audio track and get JSON with timestamps relative to the original video. Both input types support fixed language codes, automatic language detection, and mixed-language decoding. The JSON records source IDs, language mode, processing settings, and review status.

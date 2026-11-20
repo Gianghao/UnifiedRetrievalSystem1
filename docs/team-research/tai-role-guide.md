@@ -30,11 +30,12 @@ Xuân Ngân defines the benchmark and coordinates scoring. Hào coordinates the 
 |---|---|
 | Messaging, private attachments, and browsing shared items | Implemented in the app |
 | PDF text extraction with physical page numbers | Implemented as a standalone local experiment in `tools/pdf-extraction` |
-| Audio transcription and video audio extraction/transcription | Planned research work |
+| Audio transcription with fixed, automatic, and mixed language modes | Implemented as a standalone local Whisper small pilot |
+| Video audio extraction/transcription | Implemented in the local Whisper small pilot with `--video` |
 | Automatic extraction after an upload, durable jobs, and retries | Planned application integration |
 | Keyword search, dense search, reranking, and cited answers | Planned retrieval and generation work |
 
-The PDF experiment demonstrates one input path. Your full responsibility includes media processing, transcript review, error analysis, reproducibility, and coordination with the retrieval experiment. The existing tool has its own run instructions. [PDF experiment](../../tools/pdf-extraction/README.md)
+Your responsibilities cover media processing, transcript review, error analysis, reproducibility, and coordination with the retrieval experiment. [PDF exporter](../../tools/pdf-extraction/README.md) · [Audio and video exporter](../../tools/audio-transcription/README.md)
 
 ## From files to evidence
 
@@ -44,7 +45,7 @@ The PDF experiment demonstrates one input path. Your full responsibility include
 
 An audio file contains encoded sound. The processing path decodes and prepares it, runs automatic speech recognition, and returns text with time intervals.
 
-**ASR** means automatic speech recognition. The team's proposed baseline is **Whisper large-v3**. Whisper predicts text from audio and supports multilingual transcription. The model configuration, language setting, software revision, and inference options all belong in the experiment record. Its official implementation uses FFmpeg to decode input media. [Whisper documentation](https://github.com/openai/whisper)
+**ASR** means automatic speech recognition. The local pilot uses a pinned multilingual **Whisper small** model on CPU. The original brief proposed **Whisper large-v3** as a research candidate. Record the model configuration, language setting, software revision, and inference options for each run. [Local transcript exporter](../../tools/audio-transcription/README.md)
 
 A transcript segment might contain the words spoken from 12.4 to 18.9 seconds. Check those offsets against the recording. Generated timestamps need validation before they can support precise citations.
 
@@ -52,7 +53,7 @@ Record silence, unintelligible speech, and processing failures according to the 
 
 ### Video
 
-A video container can include separate video and audio streams. Select its audio stream, prepare it, and send that audio through the transcription path. FFmpeg provides stream selection and audio conversion. Preserve the relationship between extracted audio time and the original video time, including any trimming offset. [FFmpeg documentation](https://ffmpeg.org/ffmpeg.html)
+A video container can include separate video and audio streams. The local exporter selects the first audio track, decodes it through PyAV, and transcribes it using the same Whisper model as audio files. It keeps the track's playback offset so the transcript timestamps point into the original video. [Video export instructions](../../tools/audio-transcription/README.md#export-video-to-json)
 
 Your initial video evidence covers spoken content and its original timestamps. Understanding objects, slides, or actions visible in frames is a separate scope decision in the project vision.
 
@@ -138,7 +139,7 @@ These are hypotheses about consequences. Your experiment establishes which occur
 
 ## The paired experiment
 
-Your central question is **how retrieval changes when the same recordings are represented by corrected transcripts or automatic transcripts**.
+**Hypothesis 3 (H3)** predicts that search will miss the right evidence more often when an automatic transcript changes or drops important words. Tài owns the transcript comparison. Define evidence-critical terms, such as names, numbers, technical terms, and negation, before looking at rankings.
 
 ![The same recordings produce corrected and automatic transcript conditions scored with the same questions and evidence labels](diagrams/tai-paired-experiment.svg)
 

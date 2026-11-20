@@ -5,13 +5,15 @@
 
 The [visual role guide](tai-role-guide.md) explains the complete flow, concepts, experiment, and team handoffs with diagrams.
 
+Tài owns **Hypothesis 3 (H3)**. Search may miss the right evidence more often when automatic speech recognition changes or drops an important word, such as a name, number, or technical term. The [paired experiment](tai-role-guide.md#the-paired-experiment) compares automatically generated and human-corrected transcripts of the same recordings.
+
 ## Mission
 
 Produce source-linked searchable text from audio and video, and design a small controlled comparison that shows whether recognition errors change retrieval effectiveness. Also support PDF extraction so every modality enters the unified text pipeline with reliable source locations.
 
 ## Questions to investigate
 
-1. How does Whisper large-v3 perform on our selected recordings, and what is its measured Word Error Rate (WER)?
+1. How does the selected Whisper model perform on our recordings, and what is its Word Error Rate (WER)? Use the pinned Whisper small model for the local pilot and record the configuration for any separate large-v3 comparison.
 2. Which errors matter most for search: names, numbers, technical terms, negation, or changed relationships between words?
 3. Does retrieval quality decline from human-corrected transcripts to ASR transcripts on the same recordings and questions?
 4. Are the error patterns different across language, recording quality, speakers, or source type?
