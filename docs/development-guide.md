@@ -6,7 +6,7 @@ This guide records the collaboration practices, service boundaries, and design w
 
 Unified Retrieval System is intended to be a private, conversation-centered messaging and knowledge retrieval application. People exchange messages and media in explicit one-to-one conversations, then ask questions grounded in content they are allowed to access. Answers should link back to the originating message, attachment, PDF page, or audio/video timestamp, and say when available evidence is insufficient.
 
-The current application is the messaging and shared-media foundation. Retrieval, ingestion workers, transcription, OCR, embeddings, reranking, and AI answer generation remain planned work. The long-term research goal is to compare keyword, dense, hybrid, and reranked retrieval on a versioned evaluation corpus, with reproducible quality and latency measurements.
+The current application is the messaging and shared-media foundation. Standalone tools export [PDF pages](../tools/pdf-extraction/README.md) and [audio/video transcripts](../tools/audio-transcription/README.md) as source-linked JSON for research. Application ingestion workers, OCR, embeddings, retrieval, reranking, and AI answer generation remain planned work. The long-term research goal is to compare keyword, dense, hybrid, and reranked retrieval on a versioned evaluation corpus, with reproducible quality and latency measurements.
 
 ## Collaboration and working rules
 

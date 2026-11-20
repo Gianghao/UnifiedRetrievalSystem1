@@ -1,0 +1,8 @@
+flowchart LR
+    accTitle: Source provenance survives processing and retrieval
+    accDescr: The original attachment, its segment, an indexed chunk, and a retrieved result retain a mapping to the same original source and location.
+    original["Original attachment<br/>meeting-001.mp4"] --> segment["Transcript segment<br/>12.4 to 18.9 seconds<br/>ASR or corrected variant"]
+    segment --> chunk["Indexed chunk<br/>Chunk ID plus<br/>source-location mapping"]
+    chunk --> result["Retrieved evidence<br/>Open meeting-001.mp4<br/>at 12.4 to 18.9 seconds"]
+    classDef own fill:#ddf3ec,stroke:#13795b,color:#123c30;
+    class segment own;

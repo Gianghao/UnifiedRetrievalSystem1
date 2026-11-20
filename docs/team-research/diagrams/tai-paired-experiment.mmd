@@ -1,0 +1,15 @@
+flowchart TB
+    accTitle: Controlled corrected-versus-ASR retrieval experiment
+    accDescr: The same recordings and aligned intervals produce corrected and ASR transcript conditions. Corresponding corpus versions are scored using identical questions, evidence targets, and retrieval settings.
+    recordings["Same recordings<br/>Stable source IDs and aligned intervals"] --> reference["Human-corrected transcripts"]
+    recordings --> automatic["Automatic ASR transcripts"]
+    reference --> indexA["Corrected-condition index<br/>Fixed messages and PDF content"]
+    automatic --> indexB["ASR-condition index<br/>Same messages and PDF content"]
+    indexA --> resultsA["Ranked results A"]
+    indexB --> resultsB["Ranked results B"]
+    resultsA --> compare["Score with the same questions and evidence targets<br/>Same retrieval configuration and cutoffs<br/>Compare per-question scores and error cases"]
+    resultsB --> compare
+    classDef own fill:#ddf3ec,stroke:#13795b,color:#123c30;
+    classDef team fill:#edf2fb,stroke:#4a6396,color:#233855;
+    class reference,automatic own;
+    class indexA,indexB,compare team;

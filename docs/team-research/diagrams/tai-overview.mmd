@@ -1,0 +1,13 @@
+flowchart TB
+    accTitle: Tài's place in the planned unified retrieval flow
+    accDescr: Shared files pass through Tài's extraction and transcription, while messages supply text directly. Source-linked chunks feed retrieval, optional answers, and evaluation.
+    files["Authorized PDF, audio, and video files"] --> tai["Tài<br/>Extract or transcribe<br/>Preserve source locations"]
+    messages["Authorized text messages"] --> records["Shared text records and chunks<br/>Source IDs plus pages or time intervals"]
+    tai --> records
+    records --> retrieval["Quân and Thiện<br/>BM25, dense retrieval, reranking"]
+    retrieval --> answer["Optional answer generation<br/>Inspectable source citations"]
+    retrieval --> evaluation["Xuân Ngân<br/>Benchmark and retrieval scoring"]
+    classDef own fill:#ddf3ec,stroke:#13795b,color:#123c30,stroke-width:2px;
+    classDef team fill:#edf2fb,stroke:#4a6396,color:#233855;
+    class tai own;
+    class retrieval,evaluation team;
