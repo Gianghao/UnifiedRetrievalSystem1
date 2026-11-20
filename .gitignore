@@ -11,3 +11,19 @@ DockerData/
 *.log
 *.tsbuildinfo
 CLAUDE.md
+
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Browser-automation logs and screenshots (may show account details)
+.playwright-mcp/
+
+# Benchmark embedding cache (GBs; rebuilt by strategies_bench.py)
+emb_cache/
+
+tomorrow-meeting-research-brief.md

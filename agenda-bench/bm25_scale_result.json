@@ -1,0 +1,53 @@
+{
+  "tokenizer": "postgres 'simple' (lowercase, no stop words, no stemming; splits by syllable)",
+  "k1": 1.2,
+  "b": 0.75,
+  "idf": "global ln(1+(N-df+0.5)/(df+0.5))",
+  "warmup": 3,
+  "measured_queries": 30,
+  "setup": {
+    "generate_and_copy_s": 10.9,
+    "tokenize_and_stats_s": 23.2,
+    "gin_index_build_s": 3.2,
+    "bm25_index_build_s": 5.5,
+    "chunks": 1000000,
+    "avg_tokens": 28.0,
+    "distinct_terms": 13870,
+    "table_size": "503 MB",
+    "gin_size": "49 MB",
+    "bm25_index_size": "82 MB"
+  },
+  "avg_candidates_matching_any_query_term": 284306,
+  "whole_corpus": {
+    "brute_force": {
+      "p50_ms": 2632.9,
+      "p95_ms": 3204.6
+    },
+    "fts_gin_then_bm25": {
+      "p50_ms": 1529.6,
+      "p95_ms": 1854.1,
+      "same_top10_scores_as_brute_force": "30/30"
+    },
+    "pg_textsearch": {
+      "p50_ms": 15.3,
+      "p95_ms": 26.7,
+      "same_top10_scores_as_brute_force": "29/30"
+    }
+  },
+  "one_conversation": {
+    "brute_force": {
+      "p50_ms": 7.5,
+      "p95_ms": 8.7
+    },
+    "fts_gin_then_bm25": {
+      "p50_ms": 45.1,
+      "p95_ms": 54.5,
+      "same_top10_scores_as_brute_force": "30/30"
+    },
+    "pg_textsearch": {
+      "p50_ms": 66.7,
+      "p95_ms": 109.4,
+      "same_top10_scores_as_brute_force": "29/30"
+    }
+  }
+}
