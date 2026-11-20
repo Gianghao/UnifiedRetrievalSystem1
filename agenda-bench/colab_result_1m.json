@@ -1,0 +1,1090 @@
+{
+  "machine": {
+    "chip": "NVIDIA L4",
+    "device": "cuda",
+    "torch": "2.14.1+cu130"
+  },
+  "corpus": {
+    "chunks": 1000000,
+    "long_chunk_share": 0.05,
+    "note": "one synthetic conversation; gold answers planted"
+  },
+  "config": {
+    "bm25": "pg_textsearch 1.5.1, text_config=simple, k1=1.2, b=0.75",
+    "dense": "BAAI/bge-m3 fp16, cosine, exact search on the GPU (torch)",
+    "reranker": "BAAI/bge-reranker-v2-m3 fp16, max_len=512",
+    "candidate_k": 50,
+    "top_k": 10,
+    "rrf_k": 60
+  },
+  "queries": {
+    "exact_code": 20,
+    "paraphrase": 20,
+    "long_chunk_fact": 15
+  },
+  "index_build_s": {
+    "bm25": 13.65,
+    "dense_embeddings": 1132.6,
+    "dense_chunks_embedded_this_run": 1000000
+  },
+  "latency": {
+    "bm25": {
+      "total": {
+        "p50_ms": 9.4,
+        "p95_ms": 44.9
+      }
+    },
+    "dense": {
+      "total": {
+        "p50_ms": 36.9,
+        "p95_ms": 38.8
+      }
+    },
+    "dense50_rerank10": {
+      "total": {
+        "p50_ms": 66.3,
+        "p95_ms": 519.2
+      },
+      "candidates": {
+        "p50_ms": 36.3,
+        "p95_ms": 37.9
+      },
+      "rerank": {
+        "p50_ms": 29.8,
+        "p95_ms": 483.3
+      }
+    },
+    "hybrid_rrf": {
+      "total": {
+        "p50_ms": 46.3,
+        "p95_ms": 81.6
+      },
+      "bm25_part": {
+        "p50_ms": 10.2,
+        "p95_ms": 45.2
+      },
+      "dense_part": {
+        "p50_ms": 36.3,
+        "p95_ms": 37.9
+      }
+    },
+    "hybrid_rrf50_rerank10": {
+      "total": {
+        "p50_ms": 99.5,
+        "p95_ms": 543.4
+      },
+      "candidates": {
+        "p50_ms": 46.3,
+        "p95_ms": 81.6
+      },
+      "rerank": {
+        "p50_ms": 33.1,
+        "p95_ms": 499.4
+      }
+    }
+  },
+  "quality": {
+    "all": {
+      "bm25": {
+        "recall_at_10": 0.564,
+        "mrr_at_10": 0.555,
+        "ndcg_at_10": 0.557
+      },
+      "dense": {
+        "recall_at_10": 0.727,
+        "mrr_at_10": 0.68,
+        "ndcg_at_10": 0.692
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.727,
+        "mrr_at_10": 0.715,
+        "ndcg_at_10": 0.718
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.782,
+        "mrr_at_10": 0.661,
+        "ndcg_at_10": 0.692
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.818,
+        "mrr_at_10": 0.806,
+        "ndcg_at_10": 0.809
+      },
+      "dense_candidate_recall_at_50": 0.727,
+      "bm25_candidate_recall_at_50": 0.618,
+      "rrf_candidate_recall_at_50": 0.818
+    },
+    "exact_code": {
+      "bm25": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "dense": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 0.933,
+        "ndcg_at_10": 0.95
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "dense_candidate_recall_at_50": 1.0,
+      "bm25_candidate_recall_at_50": 1.0,
+      "rrf_candidate_recall_at_50": 1.0
+    },
+    "paraphrase": {
+      "bm25": {
+        "recall_at_10": 0.45,
+        "mrr_at_10": 0.425,
+        "ndcg_at_10": 0.432
+      },
+      "dense": {
+        "recall_at_10": 0.95,
+        "mrr_at_10": 0.912,
+        "ndcg_at_10": 0.922
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.95,
+        "mrr_at_10": 0.917,
+        "ndcg_at_10": 0.925
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 0.706,
+        "ndcg_at_10": 0.781
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 0.967,
+        "ndcg_at_10": 0.975
+      },
+      "dense_candidate_recall_at_50": 0.95,
+      "bm25_candidate_recall_at_50": 0.45,
+      "rrf_candidate_recall_at_50": 1.0
+    },
+    "long_chunk_fact": {
+      "bm25": {
+        "recall_at_10": 0.133,
+        "mrr_at_10": 0.133,
+        "ndcg_at_10": 0.133
+      },
+      "dense": {
+        "recall_at_10": 0.067,
+        "mrr_at_10": 0.033,
+        "ndcg_at_10": 0.042
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.067,
+        "mrr_at_10": 0.067,
+        "ndcg_at_10": 0.067
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.2,
+        "mrr_at_10": 0.15,
+        "ndcg_at_10": 0.162
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.333,
+        "mrr_at_10": 0.333,
+        "ndcg_at_10": 0.333
+      },
+      "dense_candidate_recall_at_50": 0.067,
+      "bm25_candidate_recall_at_50": 0.333,
+      "rrf_candidate_recall_at_50": 0.333
+    }
+  },
+  "per_query": [
+    {
+      "type": "exact_code",
+      "query": "kế hoạch dự án số BB-2024-5326 đã gửi cho ai?",
+      "gold_id": 548098,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 3,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 3,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "biên bản họp số BB-2024-7217 đã gửi cho ai?",
+      "gold_id": 12101,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "bản thiết kế số BB-2024-9505 đã gửi cho ai?",
+      "gold_id": 645453,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "báo cáo tài chính số BB-2025-0507 đã gửi cho ai?",
+      "gold_id": 648858,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "kế hoạch dự án số BB-2025-0579 đã gửi cho ai?",
+      "gold_id": 990737,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "biên bản họp số BB-2026-5971 đã gửi cho ai?",
+      "gold_id": 237483,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "báo cáo tài chính số BB-2026-8253 đã gửi cho ai?",
+      "gold_id": 826715,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "kế hoạch dự án số HD-2023-2104 đã gửi cho ai?",
+      "gold_id": 612136,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 3,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 3,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "hóa đơn số HD-2023-9383 đã gửi cho ai?",
+      "gold_id": 406345,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "bản thiết kế số HD-2023-9963 đã gửi cho ai?",
+      "gold_id": 212618,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "kế hoạch dự án số HD-2023-9971 đã gửi cho ai?",
+      "gold_id": 696285,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "biên bản họp số HD-2024-0885 đã gửi cho ai?",
+      "gold_id": 320237,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "biên bản họp số HD-2024-8141 đã gửi cho ai?",
+      "gold_id": 385188,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "hóa đơn số HD-2026-4176 đã gửi cho ai?",
+      "gold_id": 366868,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "hóa đơn số INV-2023-2920 đã gửi cho ai?",
+      "gold_id": 886287,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "đơn đặt hàng số PO-2024-4255 đã gửi cho ai?",
+      "gold_id": 112407,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "hóa đơn số PO-2024-9731 đã gửi cho ai?",
+      "gold_id": 575604,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "kế hoạch dự án số PO-2025-9646 đã gửi cho ai?",
+      "gold_id": 871334,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "biên bản họp số PO-2026-0524 đã gửi cho ai?",
+      "gold_id": 503225,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "bản thiết kế số PO-2026-0694 đã gửi cho ai?",
+      "gold_id": 492806,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Vì sao Tuấn vắng mặt ở công ty hôm nay?",
+      "gold_id": 449629,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Lan hiện đang cư trú tại thành phố nào?",
+      "gold_id": 870238,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Cho mình xin pass mạng không dây của phòng meeting trên lầu 3.",
+      "gold_id": 713291,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Hùng trả trước khoản đặt cọc thuê căn hộ chưa?",
+      "gold_id": 941278,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Tại sao Thảo không lên máy bay đúng lịch?",
+      "gold_id": 441984,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Tối nay mình ăn ở quán nào vậy Quốc?",
+      "gold_id": 492014,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Ngọc để lạc chìa khóa xe ở đâu?",
+      "gold_id": 708064,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Phương có được nâng thu nhập không?",
+      "gold_id": 285210,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Thiết bị in ấn trên lầu 2 gặp sự cố gì?",
+      "gold_id": 83986,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Đức vắng mặt bao lâu sau đám cưới?",
+      "gold_id": 932132,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Hà không ăn được món gì?",
+      "gold_id": 364874,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Người mua không hài lòng chuyện gì?",
+      "gold_id": 259867,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 3,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 3
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Khi nào Minh rời công ty?",
+      "gold_id": 24407,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Thú cưng của Lan mất tích khi nào?",
+      "gold_id": 93203,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Liên hoan cuối năm diễn ra tại đâu?",
+      "gold_id": 595172,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 4,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 8,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 4,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 8
+    },
+    {
+      "type": "paraphrase",
+      "query": "Tuấn theo khóa ngoại ngữ nào sau giờ làm?",
+      "gold_id": 220407,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Máy tính xách tay của Thảo hỏng do đâu?",
+      "gold_id": 421435,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Quốc sở hữu nhà mới ở khu vực nào?",
+      "gold_id": 618236,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Hạn chót gửi giấy tờ cho bộ phận tài chính là khi nào?",
+      "gold_id": 879609,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "paraphrase",
+      "query": "Ngọc đã lên chức mẹ chưa?",
+      "gold_id": 164153,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Phạt bao nhiêu nếu giao hàng trễ?",
+      "gold_id": 81989,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": 2,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 4,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 4
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Thiết bị được bảo hành trong bao lâu?",
+      "gold_id": 583255,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Khi nào bên mua có thể hủy hợp đồng?",
+      "gold_id": 555498,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Doanh thu quý 3 tăng trưởng bao nhiêu phần trăm?",
+      "gold_id": 394599,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Dự án dự kiến ra mắt khi nào?",
+      "gold_id": 245083,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Ai trả phí ship cho đơn hàng lớn?",
+      "gold_id": 36903,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Người mới vào cần học gì trong tuần đầu?",
+      "gold_id": 264608,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 44,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Kho Bình Dương nghỉ kiểm kê những ngày nào?",
+      "gold_id": 345264,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 13,
+      "gold_in_rrf_top50": 25
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Lãi suất ưu đãi năm đầu là bao nhiêu?",
+      "gold_id": 622297,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Nếu có tranh chấp thì giải quyết ở đâu?",
+      "gold_id": 302574,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Lịch bảo trì hệ thống là lúc nào?",
+      "gold_id": 734440,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Ngân sách tiếp thị năm tới được phê duyệt bao nhiêu?",
+      "gold_id": 625506,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Hạn gửi mẫu thử cho đối tác Nhật là ngày nào?",
+      "gold_id": 208326,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Lan nhận được bao nhiêu thùng hàng?",
+      "gold_id": 232320,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Lô hàng tháng 10 có tỷ lệ lỗi bao nhiêu?",
+      "gold_id": 493681,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 21,
+      "gold_in_rrf_top50": 45
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# Disposable Postgres 17 + pg_textsearch (BM25 index) for bm25_scale_bench.py only. Not the app database.
+FROM postgres:17
+ARG PGTS=1.5.1
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates unzip \
+ && curl -fsSLo /tmp/pgts.zip "https://github.com/timescale/pg_textsearch/releases/download/v${PGTS}/pg-textsearch-v${PGTS}-pg17-$(dpkg --print-architecture).zip" \
+ && unzip /tmp/pgts.zip -d /tmp/pgts && apt-get install -y /tmp/pgts/*.deb \
+ && rm -rf /tmp/pgts /tmp/pgts.zip /var/lib/apt/lists/*
+CMD ["postgres", "-c", "shared_preload_libraries=pg_textsearch"]

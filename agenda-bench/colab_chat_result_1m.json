@@ -1,0 +1,3546 @@
+{
+  "machine": {
+    "chip": "NVIDIA L4",
+    "device": "cuda",
+    "torch": "2.14.1+cu130"
+  },
+  "corpus": {
+    "chunks": 1000000,
+    "long_chunk_share": 0.05,
+    "dataset": "chat",
+    "note": "one synthetic conversation; gold answers planted"
+  },
+  "config": {
+    "bm25": "pg_textsearch 1.5.1, text_config=simple, k1=1.2, b=0.75",
+    "dense": "BAAI/bge-m3 fp16, cosine, exact search on the GPU (torch)",
+    "reranker": "BAAI/bge-reranker-v2-m3 fp16, max_len=512",
+    "candidate_k": 50,
+    "top_k": 10,
+    "rrf_k": 60
+  },
+  "queries": {
+    "exact_code": 18,
+    "paraphrase": 16,
+    "long_chunk_fact": 16,
+    "no_diacritics": 16,
+    "code_switch": 16,
+    "teencode": 16,
+    "vague_context": 16,
+    "correction": 16,
+    "unanswerable": 16
+  },
+  "index_build_s": {
+    "bm25": 11.01,
+    "dense_embeddings": 933.0,
+    "dense_chunks_embedded_this_run": 1000000
+  },
+  "latency": {
+    "bm25": {
+      "total": {
+        "p50_ms": 6.2,
+        "p95_ms": 15.9
+      }
+    },
+    "dense": {
+      "total": {
+        "p50_ms": 36.9,
+        "p95_ms": 38.2
+      }
+    },
+    "dense50_rerank10": {
+      "total": {
+        "p50_ms": 62.9,
+        "p95_ms": 380.1
+      },
+      "candidates": {
+        "p50_ms": 36.5,
+        "p95_ms": 37.9
+      },
+      "rerank": {
+        "p50_ms": 26.7,
+        "p95_ms": 342.5
+      }
+    },
+    "hybrid_rrf": {
+      "total": {
+        "p50_ms": 43.5,
+        "p95_ms": 52.5
+      },
+      "bm25_part": {
+        "p50_ms": 6.7,
+        "p95_ms": 16.3
+      },
+      "dense_part": {
+        "p50_ms": 36.5,
+        "p95_ms": 37.9
+      }
+    },
+    "hybrid_rrf50_rerank10": {
+      "total": {
+        "p50_ms": 73.1,
+        "p95_ms": 394.5
+      },
+      "candidates": {
+        "p50_ms": 43.5,
+        "p95_ms": 52.5
+      },
+      "rerank": {
+        "p50_ms": 28.1,
+        "p95_ms": 347.6
+      }
+    }
+  },
+  "quality": {
+    "all": {
+      "bm25": {
+        "recall_at_10": 0.715,
+        "mrr_at_10": 0.622,
+        "ndcg_at_10": 0.646
+      },
+      "dense": {
+        "recall_at_10": 0.677,
+        "mrr_at_10": 0.581,
+        "ndcg_at_10": 0.606
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.708,
+        "mrr_at_10": 0.621,
+        "ndcg_at_10": 0.643
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.785,
+        "mrr_at_10": 0.636,
+        "ndcg_at_10": 0.673
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.769,
+        "mrr_at_10": 0.676,
+        "ndcg_at_10": 0.7
+      },
+      "dense_candidate_recall_at_50": 0.723,
+      "bm25_candidate_recall_at_50": 0.754,
+      "rrf_candidate_recall_at_50": 0.815
+    },
+    "exact_code": {
+      "bm25": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 0.972,
+        "ndcg_at_10": 0.979
+      },
+      "dense": {
+        "recall_at_10": 0.778,
+        "mrr_at_10": 0.585,
+        "ndcg_at_10": 0.634
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.833,
+        "mrr_at_10": 0.741,
+        "ndcg_at_10": 0.765
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.944,
+        "mrr_at_10": 0.869,
+        "ndcg_at_10": 0.887
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.889,
+        "mrr_at_10": 0.824,
+        "ndcg_at_10": 0.841
+      },
+      "dense_candidate_recall_at_50": 0.833,
+      "bm25_candidate_recall_at_50": 1.0,
+      "rrf_candidate_recall_at_50": 1.0
+    },
+    "paraphrase": {
+      "bm25": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.849,
+        "ndcg_at_10": 0.871
+      },
+      "dense": {
+        "recall_at_10": 0.875,
+        "mrr_at_10": 0.875,
+        "ndcg_at_10": 0.875
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.841,
+        "ndcg_at_10": 0.864
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.896,
+        "ndcg_at_10": 0.906
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.875,
+        "mrr_at_10": 0.778,
+        "ndcg_at_10": 0.801
+      },
+      "dense_candidate_recall_at_50": 1.0,
+      "bm25_candidate_recall_at_50": 0.938,
+      "rrf_candidate_recall_at_50": 0.938
+    },
+    "long_chunk_fact": {
+      "bm25": {
+        "recall_at_10": 0.188,
+        "mrr_at_10": 0.046,
+        "ndcg_at_10": 0.08
+      },
+      "dense": {
+        "recall_at_10": 0.625,
+        "mrr_at_10": 0.594,
+        "ndcg_at_10": 0.602
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.688,
+        "mrr_at_10": 0.688,
+        "ndcg_at_10": 0.688
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.625,
+        "mrr_at_10": 0.396,
+        "ndcg_at_10": 0.455
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.688,
+        "mrr_at_10": 0.688,
+        "ndcg_at_10": 0.688
+      },
+      "dense_candidate_recall_at_50": 0.688,
+      "bm25_candidate_recall_at_50": 0.312,
+      "rrf_candidate_recall_at_50": 0.688
+    },
+    "no_diacritics": {
+      "bm25": {
+        "recall_at_10": 0.062,
+        "mrr_at_10": 0.062,
+        "ndcg_at_10": 0.062
+      },
+      "dense": {
+        "recall_at_10": 0.062,
+        "mrr_at_10": 0.021,
+        "ndcg_at_10": 0.031
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.062,
+        "mrr_at_10": 0.062,
+        "ndcg_at_10": 0.062
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.125,
+        "mrr_at_10": 0.073,
+        "ndcg_at_10": 0.085
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.125,
+        "mrr_at_10": 0.125,
+        "ndcg_at_10": 0.125
+      },
+      "dense_candidate_recall_at_50": 0.062,
+      "bm25_candidate_recall_at_50": 0.062,
+      "rrf_candidate_recall_at_50": 0.125
+    },
+    "code_switch": {
+      "bm25": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "dense": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.938,
+        "ndcg_at_10": 0.938
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.938,
+        "ndcg_at_10": 0.938
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.938,
+        "ndcg_at_10": 0.938
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.938,
+        "ndcg_at_10": 0.938
+      },
+      "dense_candidate_recall_at_50": 0.938,
+      "bm25_candidate_recall_at_50": 1.0,
+      "rrf_candidate_recall_at_50": 1.0
+    },
+    "teencode": {
+      "bm25": {
+        "recall_at_10": 0.875,
+        "mrr_at_10": 0.875,
+        "ndcg_at_10": 0.875
+      },
+      "dense": {
+        "recall_at_10": 0.812,
+        "mrr_at_10": 0.812,
+        "ndcg_at_10": 0.812
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.875,
+        "mrr_at_10": 0.78,
+        "ndcg_at_10": 0.802
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.854,
+        "ndcg_at_10": 0.874
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.875,
+        "mrr_at_10": 0.779,
+        "ndcg_at_10": 0.801
+      },
+      "dense_candidate_recall_at_50": 0.875,
+      "bm25_candidate_recall_at_50": 0.938,
+      "rrf_candidate_recall_at_50": 0.938
+    },
+    "vague_context": {
+      "bm25": {
+        "recall_at_10": 0.625,
+        "mrr_at_10": 0.562,
+        "ndcg_at_10": 0.579
+      },
+      "dense": {
+        "recall_at_10": 0.375,
+        "mrr_at_10": 0.333,
+        "ndcg_at_10": 0.344
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.375,
+        "mrr_at_10": 0.375,
+        "ndcg_at_10": 0.375
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 0.75,
+        "mrr_at_10": 0.493,
+        "ndcg_at_10": 0.556
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 0.75,
+        "mrr_at_10": 0.698,
+        "ndcg_at_10": 0.71
+      },
+      "dense_candidate_recall_at_50": 0.438,
+      "bm25_candidate_recall_at_50": 0.75,
+      "rrf_candidate_recall_at_50": 0.812
+    },
+    "correction": {
+      "bm25": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 0.562,
+        "ndcg_at_10": 0.677
+      },
+      "dense": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.49,
+        "ndcg_at_10": 0.606
+      },
+      "dense50_rerank10": {
+        "recall_at_10": 0.938,
+        "mrr_at_10": 0.531,
+        "ndcg_at_10": 0.638
+      },
+      "hybrid_rrf": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 0.537,
+        "ndcg_at_10": 0.656
+      },
+      "hybrid_rrf50_rerank10": {
+        "recall_at_10": 1.0,
+        "mrr_at_10": 0.562,
+        "ndcg_at_10": 0.677
+      },
+      "dense_candidate_recall_at_50": 0.938,
+      "bm25_candidate_recall_at_50": 1.0,
+      "rrf_candidate_recall_at_50": 1.0
+    },
+    "correction_stale_above_gold": {
+      "bm25": 0.875,
+      "dense": 0.938,
+      "dense50_rerank10": 0.875,
+      "hybrid_rrf": 0.875,
+      "hybrid_rrf50_rerank10": 0.875
+    },
+    "rerank_top1_score_median": {
+      "dense50_rerank10": {
+        "answerable": 3.022,
+        "unanswerable": -1.754
+      },
+      "hybrid_rrf50_rerank10": {
+        "answerable": 3.048,
+        "unanswerable": -1.894
+      }
+    }
+  },
+  "per_query": [
+    {
+      "type": "exact_code",
+      "query": "DH-2025-7047 ai giữ v",
+      "gold_id": 486260,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.29736328125,
+        "hybrid_rrf50_rerank10": 5.08984375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "exact_code",
+      "query": "check giùm HD-2025-0218",
+      "gold_id": 256039,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 7,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.681640625,
+        "hybrid_rrf50_rerank10": 1.7421875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 7
+    },
+    {
+      "type": "exact_code",
+      "query": "INV-2024-2970 gửi chưa",
+      "gold_id": 820002,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 5,
+        "dense50_rerank10": 3,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 3
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.26171875,
+        "hybrid_rrf50_rerank10": 4.26171875
+      },
+      "gold_in_dense_top50": 5,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "tại sao BB-2026-5892 bị trễ",
+      "gold_id": 64143,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 2,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.45703125,
+        "hybrid_rrf50_rerank10": 4.45703125
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "PO-2026-3197 bao nhiêu tiền",
+      "gold_id": 801195,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.34375,
+        "hybrid_rrf50_rerank10": 5.34375
+      },
+      "gold_in_dense_top50": 18,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "DH-2024-1554 hết hạn khi nào",
+      "gold_id": 326023,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.796875,
+        "hybrid_rrf50_rerank10": 5.796875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "DH-2023-5304 approve chưa",
+      "gold_id": 790819,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 3,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.3828125,
+        "hybrid_rrf50_rerank10": 5.3828125
+      },
+      "gold_in_dense_top50": 3,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "ai ký nhận INV-2026-9334",
+      "gold_id": 754494,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.96875,
+        "hybrid_rrf50_rerank10": 2.966796875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "DH-2024-8263 thanh toán đợt mấy",
+      "gold_id": 47165,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.462890625,
+        "hybrid_rrf50_rerank10": 3.462890625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "DH-2025-4232 ai giữ v",
+      "gold_id": 600889,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 2,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.3125,
+        "hybrid_rrf50_rerank10": 5.3125
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "check giùm PO-2023-2623",
+      "gold_id": 334717,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.34375,
+        "hybrid_rrf50_rerank10": 3.34375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 13
+    },
+    {
+      "type": "exact_code",
+      "query": "BB-2024-5406 gửi chưa",
+      "gold_id": 170534,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.45703125,
+        "hybrid_rrf50_rerank10": 3.044921875
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "tại sao DH-2025-7073 bị trễ",
+      "gold_id": 821957,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.53515625,
+        "hybrid_rrf50_rerank10": 4.53515625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "HD-2026-3389 bao nhiêu tiền",
+      "gold_id": 974033,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.26171875,
+        "hybrid_rrf50_rerank10": 5.265625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "HD-2023-5599 hết hạn khi nào",
+      "gold_id": 35487,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.58203125,
+        "hybrid_rrf50_rerank10": 5.58203125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "PO-2026-1653 approve chưa",
+      "gold_id": 59925,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 2,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 6.0078125,
+        "hybrid_rrf50_rerank10": 6.00390625
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "ai ký nhận INV-2025-0813",
+      "gold_id": 399169,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.84765625,
+        "hybrid_rrf50_rerank10": 2.845703125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "exact_code",
+      "query": "HD-2025-4897 thanh toán đợt mấy",
+      "gold_id": 367146,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.828125,
+        "hybrid_rrf50_rerank10": 3.828125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "sao hnay Trang Đen vắng mặt",
+      "gold_id": 646992,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.1328125,
+        "hybrid_rrf50_rerank10": 0.51611328125
+      },
+      "gold_in_dense_top50": 43,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "paraphrase",
+      "query": "party của Duy Râu giờ tổ chức ngày nào z",
+      "gold_id": 249948,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 4,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 4
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.287109375,
+        "hybrid_rrf50_rerank10": -1.2861328125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "mấy giờ đi ăn ở Hạc Giấy vậy",
+      "gold_id": 748722,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.59814453125,
+        "hybrid_rrf50_rerank10": 0.58935546875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "tại sao Khánh Đen đến muộn",
+      "gold_id": 934375,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 4,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.23828125,
+        "hybrid_rrf50_rerank10": 5.23828125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 4,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "ai đã trả tiền đặt cọc nhà Ngân Ưng",
+      "gold_id": 184051,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.873046875,
+        "hybrid_rrf50_rerank10": 1.8740234375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "tuần tới ai phải vào văn phòng, có phải Phương Đen ko",
+      "gold_id": 667227,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 3,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.8974609375,
+        "hybrid_rrf50_rerank10": 0.896484375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 3,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "quán Bông Gòn còn mở cửa ko",
+      "gold_id": 73734,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.94921875,
+        "hybrid_rrf50_rerank10": 2.94921875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Phương Cận nói cần chuẩn bị thiết bị gì cho buổi họp",
+      "gold_id": 196912,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.8720703125,
+        "hybrid_rrf50_rerank10": 0.8720703125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "chuyến bay Xích Sư sao rồi, có lấy lại tiền ko",
+      "gold_id": 613538,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.291259765625,
+        "hybrid_rrf50_rerank10": 0.291259765625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Nhi Đen có tin vui gì ko",
+      "gold_id": 409998,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 3,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.16259765625,
+        "hybrid_rrf50_rerank10": 0.166259765625
+      },
+      "gold_in_dense_top50": 50,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 3
+    },
+    {
+      "type": "paraphrase",
+      "query": "người nhà Trang Gầy ốm hả, bao giờ xuất viện",
+      "gold_id": 761412,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.8232421875,
+        "hybrid_rrf50_rerank10": 1.8251953125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "thuê chung cư Xích Phụng hết bao nhiêu",
+      "gold_id": 533653,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.962890625,
+        "hybrid_rrf50_rerank10": 3.962890625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Hà Béo bị kẹt ngoài nhà hả",
+      "gold_id": 286014,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.626953125,
+        "hybrid_rrf50_rerank10": 3.626953125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "sau khi update Kim Sư thì login thế nào",
+      "gold_id": 358862,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.4462890625,
+        "hybrid_rrf50_rerank10": 0.4462890625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "Sơn Béo đãi gì z",
+      "gold_id": 789580,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 5,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 5
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.339599609375,
+        "hybrid_rrf50_rerank10": -0.33349609375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "paraphrase",
+      "query": "điều hòa phòng Huyền Quy bị trục trặc gì",
+      "gold_id": 29872,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.1297607421875,
+        "hybrid_rrf50_rerank10": 0.1341552734375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "khi nào kho Lam Ưng đóng cửa kiểm kê",
+      "gold_id": 136926,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.17578125,
+        "hybrid_rrf50_rerank10": 5.17578125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "phạt trễ hạn thanh toán HD-2026-0177 là bao nhiêu",
+      "gold_id": 128370,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.00390625,
+        "hybrid_rrf50_rerank10": 5.00390625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "ngân sách quảng cáo Mắm Tôm quý 4 duyệt bao nhiêu",
+      "gold_id": 332061,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": 3,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 6.77734375,
+        "hybrid_rrf50_rerank10": 6.77734375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 3,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "bảo hành thiết bị Thạch Lân mấy tháng",
+      "gold_id": 527426,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.60546875,
+        "hybrid_rrf50_rerank10": 4.60546875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "đào tạo Xích Ưng ở phòng nào",
+      "gold_id": 680756,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.25732421875,
+        "hybrid_rrf50_rerank10": -0.258056640625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "ai là người nhận hàng đợt HD-2024-8228",
+      "gold_id": 238004,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.8818359375,
+        "hybrid_rrf50_rerank10": -0.88525390625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "ra mắt sản phẩm Bạch Dương dời sang ngày nào",
+      "gold_id": 287273,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": 5,
+        "dense": 2,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.17578125,
+        "hybrid_rrf50_rerank10": 4.17578125
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 5,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "ai đề xuất đổi bao bì sang Lam Báo",
+      "gold_id": 207487,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.875,
+        "hybrid_rrf50_rerank10": 4.875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "bảo hiểm hàng của BB-2024-9238 tối đa bao nhiêu",
+      "gold_id": 280112,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.2529296875,
+        "hybrid_rrf50_rerank10": 1.25390625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "ai phụ trách liên hệ khách Trăng Non",
+      "gold_id": 634827,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.77490234375,
+        "hybrid_rrf50_rerank10": -0.77197265625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "tòa Thanh Quy cúp điện lúc nào",
+      "gold_id": 739474,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.66796875,
+        "hybrid_rrf50_rerank10": 3.66796875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "hạn nộp hồ sơ thầu gói Đèn Lồng",
+      "gold_id": 315294,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": 5,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 3,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.45703125,
+        "hybrid_rrf50_rerank10": 5.45703125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 5,
+      "gold_in_rrf_top50": 3
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "server Huyền Lân nâng cấp RAM bao nhiêu",
+      "gold_id": 972249,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.40625,
+        "hybrid_rrf50_rerank10": 4.40625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 19,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "Phượng Tím giảm giá bao nhiêu phần trăm",
+      "gold_id": 251732,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.1513671875,
+        "hybrid_rrf50_rerank10": -0.93994140625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "tranh chấp hợp đồng INV-2026-7679 giải quyết ở đâu",
+      "gold_id": 729670,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.66796875,
+        "hybrid_rrf50_rerank10": 5.66796875
+      },
+      "gold_in_dense_top50": 12,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 24
+    },
+    {
+      "type": "long_chunk_fact",
+      "query": "chương trình tri ân Xích Tước kết thúc khi nào",
+      "gold_id": 501498,
+      "gold_is_long": true,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.59765625,
+        "hybrid_rrf50_rerank10": 4.59765625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 38,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "no_diacritics",
+      "query": "mat khau wifi phong hop Thach Tuoc la gi",
+      "gold_id": 182431,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.796875,
+        "hybrid_rrf50_rerank10": -1.650390625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "dia chi giao hang moi cua Tuan Lun o dau",
+      "gold_id": 931191,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.533203125,
+        "hybrid_rrf50_rerank10": -1.53125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "so tai khoan cong ty Lam Lan la gi",
+      "gold_id": 976495,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -2.1328125,
+        "hybrid_rrf50_rerank10": -2.1328125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "khi nao bao tri thang may toa Canh Buom",
+      "gold_id": 309404,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -3.798828125,
+        "hybrid_rrf50_rerank10": -3.796875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "chia khoa tu ho so Rong Xanh o dau",
+      "gold_id": 684713,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.3310546875,
+        "hybrid_rrf50_rerank10": -1.328125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "lop tieng Anh trung tam Thach Sanh hoc ngay nao",
+      "gold_id": 195183,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -6.04296875,
+        "hybrid_rrf50_rerank10": 1.4794921875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "no_diacritics",
+      "query": "ma giam gia Tu Ung la gi",
+      "gold_id": 67274,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -3.412109375,
+        "hybrid_rrf50_rerank10": -3.4921875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "anh Thinh Map ngoi ban so may",
+      "gold_id": 563780,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.1162109375,
+        "hybrid_rrf50_rerank10": -1.119140625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "Thu Den tai kham luc may gio",
+      "gold_id": 638605,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.337890625,
+        "hybrid_rrf50_rerank10": -1.0322265625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "link do an nhom Thach Long o dau",
+      "gold_id": 833938,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -3.119140625,
+        "hybrid_rrf50_rerank10": -3.119140625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "phong hop Kim Bao chua duoc bao nhieu nguoi",
+      "gold_id": 206034,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.7578125,
+        "hybrid_rrf50_rerank10": -1.4580078125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "tien dien thang nay can ho Xich Lan bao nhieu",
+      "gold_id": 994143,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.34326171875,
+        "hybrid_rrf50_rerank10": -0.142578125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "mật khẩu máy chiếu phòng Ốc Gạo là gì",
+      "gold_id": 607021,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -3.224609375,
+        "hybrid_rrf50_rerank10": -3.23046875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "xe của Phương Râu đỗ ở đâu",
+      "gold_id": 870462,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.95654296875,
+        "hybrid_rrf50_rerank10": -1.03125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "no_diacritics",
+      "query": "Thư Sến biểu diễn mấy giờ ở đêm nhạc Thiết Điểu",
+      "gold_id": 539567,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 3,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 6,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.64453125,
+        "hybrid_rrf50_rerank10": 3.64453125
+      },
+      "gold_in_dense_top50": 3,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 6
+    },
+    {
+      "type": "no_diacritics",
+      "query": "hợp đồng thuê kho Lửa Hồng hết hạn ngày nào",
+      "gold_id": 491641,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.09783935546875,
+        "hybrid_rrf50_rerank10": 0.0989990234375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "code_switch",
+      "query": "deadline report Q3 project Cây Đa khi nào",
+      "gold_id": 146664,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.708984375,
+        "hybrid_rrf50_rerank10": 3.70703125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "meeting với client Tử Lân mấy giờ, room nào",
+      "gold_id": 78100,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.349609375,
+        "hybrid_rrf50_rerank10": 3.349609375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "Nam Sến approve design homepage Thạch Phụng chưa",
+      "gold_id": 389015,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.89453125,
+        "hybrid_rrf50_rerank10": 5.890625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "OT thứ 5 cho Tử Điểu đúng ko",
+      "gold_id": 976046,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.150390625,
+        "hybrid_rrf50_rerank10": 3.150390625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 23
+    },
+    {
+      "type": "code_switch",
+      "query": "book room tầng 6 cho training Lam Điểu xong chưa",
+      "gold_id": 238364,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.6796875,
+        "hybrid_rrf50_rerank10": 3.681640625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "send quotation cho Huyền Mãng before 5pm nhớ ko",
+      "gold_id": 452468,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.94140625,
+        "hybrid_rrf50_rerank10": 5.94140625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "Phương Ngố qua team sale từ khi nào",
+      "gold_id": 359784,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.4658203125,
+        "hybrid_rrf50_rerank10": 1.4658203125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "feedback của Kim Ưng về demo thế nào",
+      "gold_id": 443465,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.1640625,
+        "hybrid_rrf50_rerank10": 4.1640625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "onboard Hùng Ngố start ngày nào, cần setup laptop",
+      "gold_id": 945915,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.751953125,
+        "hybrid_rrf50_rerank10": 3.751953125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "plan campaign Dừa Xiêm bị delay hả, vì sao",
+      "gold_id": 246609,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.9375,
+        "hybrid_rrf50_rerank10": 5.9375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "Giang Nâu cancel trip đi Trầm Hương à",
+      "gold_id": 819094,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 6.98046875,
+        "hybrid_rrf50_rerank10": 6.98046875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "progress update project Ngọc Lan Tây ở folder nào, Yến Xù share rồi",
+      "gold_id": 392859,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 6.1015625,
+        "hybrid_rrf50_rerank10": 6.1015625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "KPI sale tháng này team Thiết Lân bao nhiêu",
+      "gold_id": 560461,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.765625,
+        "hybrid_rrf50_rerank10": 3.765625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "biên bản cuộc họp Thiết Ưng ai viết, đưa lên đâu",
+      "gold_id": 646537,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.994140625,
+        "hybrid_rrf50_rerank10": 2.994140625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "Lan Xù cần xem tệp Cá Chép Đỏ lúc nào",
+      "gold_id": 446866,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.115234375,
+        "hybrid_rrf50_rerank10": 2.115234375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "code_switch",
+      "query": "khách Tre Xanh không đồng ý phần nào, ai gọi lại cho họ",
+      "gold_id": 672816,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.05078125,
+        "hybrid_rrf50_rerank10": 3.05078125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "ai giữ chìa khóa kho Lam Long z, ko thấy đâu",
+      "gold_id": 40052,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.29296875,
+        "hybrid_rrf50_rerank10": 4.41796875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 35,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "teencode",
+      "query": "bh mn tập trung ở đâu z, tòa Bạch Sư hả",
+      "gold_id": 733395,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.671875,
+        "hybrid_rrf50_rerank10": 2.671875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "sao Thảo Râu ko đi tiệc Thanh Sư đc z",
+      "gold_id": 880996,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.16015625,
+        "hybrid_rrf50_rerank10": 5.16015625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "c Hiếu Ngố ns bh có kq xét nghiệm z",
+      "gold_id": 710205,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": 7,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 8
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.373779296875,
+        "hybrid_rrf50_rerank10": -0.376708984375
+      },
+      "gold_in_dense_top50": 27,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "đt Tuấn Râu mất ở đâu z, trạm Mây Tre hả",
+      "gold_id": 129954,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 6.37890625,
+        "hybrid_rrf50_rerank10": 6.3828125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "sdt nội bộ phòng Hải Đăng Xanh là j z",
+      "gold_id": 654971,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.296875,
+        "hybrid_rrf50_rerank10": 1.296875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "mai ai ib khách Tử Tước z",
+      "gold_id": 313654,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 6,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.2135009765625,
+        "hybrid_rrf50_rerank10": 0.11260986328125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 6
+    },
+    {
+      "type": "teencode",
+      "query": "xăng chuyến Quế Lâm hết bn z, ai ứng trc",
+      "gold_id": 481884,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 3,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 3
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.9150390625,
+        "hybrid_rrf50_rerank10": 1.9150390625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "tối nay ae ăn lẩu quán Huyền Phụng mấy h z",
+      "gold_id": 217944,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.34375,
+        "hybrid_rrf50_rerank10": 4.34375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "mk máy chấm công Huyền Tước đổi r à, hỏi ai z",
+      "gold_id": 116276,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.51953125,
+        "hybrid_rrf50_rerank10": 4.51953125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "a Hiếu Cận ns dl slide Bạch Ưng dời qua hôm nào z",
+      "gold_id": 546564,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.90625,
+        "hybrid_rrf50_rerank10": 1.90625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "hàng Thiết Long về r chưa, thiếu j ko",
+      "gold_id": 610760,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.1953125,
+        "hybrid_rrf50_rerank10": 2.1875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "Dũng Mập nghỉ ở cty Hồng Hạc thật ko, bh bàn giao",
+      "gold_id": 65414,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.2265625,
+        "hybrid_rrf50_rerank10": 4.2265625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "ai mua vé phim Thanh Tước r, suất mấy h z",
+      "gold_id": 279227,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.986328125,
+        "hybrid_rrf50_rerank10": 3.986328125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "xe Bãi Sậy chưa tới à, bao giờ tới z",
+      "gold_id": 720970,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.81640625,
+        "hybrid_rrf50_rerank10": 1.81640625
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "teencode",
+      "query": "pk Lam Quy có làm cuối tuần ko z",
+      "gold_id": 704459,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.49609375,
+        "hybrid_rrf50_rerank10": 2.49609375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "vague_context",
+      "query": "ổng gửi cái file logo hôm bữa chưa",
+      "gold_id": 813311,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 3,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.533203125,
+        "hybrid_rrf50_rerank10": 2.533203125
+      },
+      "gold_in_dense_top50": 28,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 3
+    },
+    {
+      "type": "vague_context",
+      "query": "bả sửa cái bản mẫu lệch màu chưa",
+      "gold_id": 42866,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.37109375,
+        "hybrid_rrf50_rerank10": 2.37109375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "vague_context",
+      "query": "cái hình to đứng ở sảnh bả cất đâu rồi",
+      "gold_id": 644404,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 3,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -6.91796875,
+        "hybrid_rrf50_rerank10": -3.43359375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 3
+    },
+    {
+      "type": "vague_context",
+      "query": "cái phiếu giảm giá ảnh còn xài đc ko",
+      "gold_id": 592704,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.0107421875,
+        "hybrid_rrf50_rerank10": 1.0107421875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "vague_context",
+      "query": "bộ đồ thú to thuê bao nhiêu 1 ngày",
+      "gold_id": 799687,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 3,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -4.015625,
+        "hybrid_rrf50_rerank10": -0.681640625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 3
+    },
+    {
+      "type": "vague_context",
+      "query": "ổng duyệt bản nào rồi nhỉ, cái tờ dán tường",
+      "gold_id": 239281,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": 6
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.3935546875,
+        "hybrid_rrf50_rerank10": -1.490234375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 18,
+      "gold_in_rrf_top50": 35
+    },
+    {
+      "type": "vague_context",
+      "query": "mấy hộp tết đóng xong chưa, bao nhiêu hộp",
+      "gold_id": 143414,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 2.55859375,
+        "hybrid_rrf50_rerank10": 2.55859375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "vague_context",
+      "query": "cái máy đục lỗ ổng để quên đâu",
+      "gold_id": 687260,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 3,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 7,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.52001953125,
+        "hybrid_rrf50_rerank10": 0.52001953125
+      },
+      "gold_in_dense_top50": 3,
+      "gold_in_bm25_top50": 25,
+      "gold_in_rrf_top50": 7
+    },
+    {
+      "type": "vague_context",
+      "query": "tấm biển trước tiệm làm xong chưa",
+      "gold_id": 286104,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.7109375,
+        "hybrid_rrf50_rerank10": -1.7109375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "vague_context",
+      "query": "áo cả nhóm thiếu size nào, bả đặt thêm chưa",
+      "gold_id": 747382,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.6396484375,
+        "hybrid_rrf50_rerank10": 0.6396484375
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "vague_context",
+      "query": "cái ổ lưu trữ ngoài đâu rồi",
+      "gold_id": 595623,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -2.326171875,
+        "hybrid_rrf50_rerank10": 0.0579833984375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "vague_context",
+      "query": "ai đi lấy cái bánh sinh nhật",
+      "gold_id": 920401,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.4375,
+        "hybrid_rrf50_rerank10": -0.1488037109375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "vague_context",
+      "query": "cái máy chụp hình mượn tới bao giờ",
+      "gold_id": 202466,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.305419921875,
+        "hybrid_rrf50_rerank10": -0.305419921875
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "vague_context",
+      "query": "mấy cái xe trong kho sao ko chạy",
+      "gold_id": 900928,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -3.1171875,
+        "hybrid_rrf50_rerank10": -3.1171875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "vague_context",
+      "query": "cái tủ để sách khi nào giao, ai nhận",
+      "gold_id": 453049,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.484130859375,
+        "hybrid_rrf50_rerank10": -0.49658203125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "vague_context",
+      "query": "cái nhãn dán bị sai r, ổng bắt in lại chưa",
+      "gold_id": 828410,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 4,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.75732421875,
+        "hybrid_rrf50_rerank10": 0.55712890625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 4
+    },
+    {
+      "type": "correction",
+      "query": "ai đi lấy hợp đồng Sóc Nâu thứ 6",
+      "gold_id": 898665,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": 10,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 6.56640625,
+        "hybrid_rrf50_rerank10": 6.56640625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 10
+    },
+    {
+      "type": "correction",
+      "query": "mai mấy giờ họp dự án Huyền Báo",
+      "gold_id": 109908,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 2,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.23828125,
+        "hybrid_rrf50_rerank10": 4.23828125
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "correction",
+      "query": "tiền cọc phòng Rạng Đông Mới bao nhiêu",
+      "gold_id": 525710,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.6953125,
+        "hybrid_rrf50_rerank10": 5.6953125
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "sinh nhật Long Nâu tổ chức ở đâu",
+      "gold_id": 366331,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 3,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 6.67578125,
+        "hybrid_rrf50_rerank10": 6.67578125
+      },
+      "gold_in_dense_top50": 3,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "khi nào Tú Mập gửi báo giá Thiết Phụng",
+      "gold_id": 316499,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.77734375,
+        "hybrid_rrf50_rerank10": 4.77734375
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "pass wifi tầng 5 Ngân Tước là gì",
+      "gold_id": 365954,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 1,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 2,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.58203125,
+        "hybrid_rrf50_rerank10": 4.58203125
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 1,
+      "gold_in_rrf_top50": 1
+    },
+    {
+      "type": "correction",
+      "query": "kho Huyền Điểu giao bao nhiêu thùng",
+      "gold_id": 577290,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 6.07421875,
+        "hybrid_rrf50_rerank10": 6.07421875
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "hạn nộp hồ sơ Cúc Họa Mi",
+      "gold_id": 623088,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.65625,
+        "hybrid_rrf50_rerank10": 5.65625
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "ai đưa khách Thanh Điểu ra sân bay",
+      "gold_id": 853133,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 1,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 2,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.51953125,
+        "hybrid_rrf50_rerank10": 5.51953125
+      },
+      "gold_in_dense_top50": 1,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "phòng họp Đồi Chè đặt lúc nào",
+      "gold_id": 217516,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.609375,
+        "hybrid_rrf50_rerank10": 4.609375
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "giá gói Thiết Mãng hiện tại bao nhiêu",
+      "gold_id": 233884,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 3.869140625,
+        "hybrid_rrf50_rerank10": 3.87109375
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "chuyến bay Tử Phụng cất cánh mấy giờ",
+      "gold_id": 597596,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.921875,
+        "hybrid_rrf50_rerank10": 4.921875
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "xe Kim Phụng giao ngày nào",
+      "gold_id": 902594,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.44921875,
+        "hybrid_rrf50_rerank10": 4.44921875
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "ai phụ trách khách Sương Mai",
+      "gold_id": 866968,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.31640625,
+        "hybrid_rrf50_rerank10": 5.31640625
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "trưa nay team Nấm Hương ăn gì",
+      "gold_id": 740129,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 5.55078125,
+        "hybrid_rrf50_rerank10": 5.55078125
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "correction",
+      "query": "tiền công dự án Gió Đồng khi nào trả",
+      "gold_id": 685025,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": 2,
+        "dense": 2,
+        "dense50_rerank10": 2,
+        "hybrid_rrf": 2,
+        "hybrid_rrf50_rerank10": 2
+      },
+      "stale_rank": {
+        "bm25": 1,
+        "dense": 1,
+        "dense50_rerank10": 1,
+        "hybrid_rrf": 1,
+        "hybrid_rrf50_rerank10": 1
+      },
+      "rerank_top1_score": {
+        "dense50_rerank10": 4.16796875,
+        "hybrid_rrf50_rerank10": 4.16796875
+      },
+      "gold_in_dense_top50": 2,
+      "gold_in_bm25_top50": 2,
+      "gold_in_rrf_top50": 2
+    },
+    {
+      "type": "unanswerable",
+      "query": "bảo hiểm xe Vespa của sếp hết hạn khi nào",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -5.58203125,
+        "hybrid_rrf50_rerank10": -5.44140625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "vé đi Kyoto đặt chưa",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -4.4375,
+        "hybrid_rrf50_rerank10": -4.4453125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "lớp Zumba tối thứ 4 mấy giờ",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.435302734375,
+        "hybrid_rrf50_rerank10": -0.6484375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "ai đặt kombucha cho văn phòng vậy",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.265625,
+        "hybrid_rrf50_rerank10": -1.26953125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "xe Tesla của giám đốc sạc ở đâu",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -3.806640625,
+        "hybrid_rrf50_rerank10": -4.60546875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "ho so visa Uc cua chi Lan nop chua",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.84375,
+        "hybrid_rrf50_rerank10": -1.4072265625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "con Mochi hôm qua đi khám thú y chưa",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 1.4150390625,
+        "hybrid_rrf50_rerank10": 1.4150390625
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "ai đi xăm hình hôm qua z",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": 0.85400390625,
+        "hybrid_rrf50_rerank10": 1.8623046875
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "ai mua bitcoin hôm qua vậy",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.056182861328125,
+        "hybrid_rrf50_rerank10": -0.0518798828125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "đăng ký marathon 21km chưa",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -3.095703125,
+        "hybrid_rrf50_rerank10": -2.74609375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "thẻ Techcombank mới ai làm vậy",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.46875,
+        "hybrid_rrf50_rerank10": -0.82080078125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "tour Kon Tum tháng sau đi mấy người",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -0.908203125,
+        "hybrid_rrf50_rerank10": -0.908203125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "sân pickleball đặt giờ nào",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -2.49609375,
+        "hybrid_rrf50_rerank10": -2.49609375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "khi nào thi chứng chỉ PMP",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -4.25,
+        "hybrid_rrf50_rerank10": -4.89453125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "check lịch thầy phong thủy xem ngày khai trương",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -5.8984375,
+        "hybrid_rrf50_rerank10": -3.126953125
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    },
+    {
+      "type": "unanswerable",
+      "query": "laptop Framework của team dev giao chưa",
+      "gold_id": null,
+      "gold_is_long": false,
+      "rank": {
+        "bm25": null,
+        "dense": null,
+        "dense50_rerank10": null,
+        "hybrid_rrf": null,
+        "hybrid_rrf50_rerank10": null
+      },
+      "stale_rank": null,
+      "rerank_top1_score": {
+        "dense50_rerank10": -1.6640625,
+        "hybrid_rrf50_rerank10": -2.380859375
+      },
+      "gold_in_dense_top50": null,
+      "gold_in_bm25_top50": null,
+      "gold_in_rrf_top50": null
+    }
+  ]
+}
